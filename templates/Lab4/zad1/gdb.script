@@ -1,0 +1,7 @@
+display/i $pc
+display/d $rdi
+display/d $rsi
+display/d $r8
+display/d $rax
+display/d $rsp
+b _start

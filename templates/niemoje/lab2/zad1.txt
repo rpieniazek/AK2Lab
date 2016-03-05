@@ -1,0 +1,60 @@
+.data
+	znak: .ascii "0\n"
+.text
+	filename: .ascii "minmax.txt\0"
+.global _start
+_start:
+	mov $2, %rax
+	mov $filename, %rdi
+	mov $02, %rsi
+	syscall
+
+	mov %rax, %r8
+	mov $9, %rax
+	mov $0, %rdi
+	mov $4096, %rsi
+	mov $3, %rdx
+	mov $1, %r10
+	mov $0, %r9
+	syscall
+
+	mov $0, %rcx
+	mov (%rax, %rcx,1), %r9b
+	mov %r9b, %r12b
+odczyt:
+	inc %rcx
+	mov (%rax, %rcx, 1), %r8b
+
+	cmp $10, %r8b
+	je exit
+	cmp %r9b, %r8b
+	jg wieksza
+	cmp %r12b, %r8b
+	jl mniejsza
+	jmp odczyt
+wieksza:
+	mov %r8, %r9
+	jmp odczyt
+mniejsza:
+	mov %r8, %r12
+	jmp odczyt
+exit:
+	mov %rax, %rdi
+	mov $11, %rax
+	syscall
+
+	mov %r9b, znak
+
+	mov $1, %rax
+	mov $1, %rdi
+	mov $znak, %rsi
+	mov $2, %rdx
+	syscall
+
+	mov %r12b, znak
+	mov $1, %rax
+	syscall
+
+	mov $60, %rax
+	mov $0, %rdi
+	syscall

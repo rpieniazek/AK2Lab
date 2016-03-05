@@ -1,0 +1,13 @@
+.data
+.text
+.global _start
+
+_start:
+	mov $2,%rdi
+	mov $3,%rsi
+	call power
+	
+	mov %rax,%r8
+	mov %r8,%rdi	
+	mov $60, %rax
+	syscall 	#pojawia sie wynik

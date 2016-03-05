@@ -1,0 +1,4 @@
+Program wyswietlajacy pierwszych 10 liczb ciagu Fibonacciego.
+Program podczas działania zwraca SegmentationFault (core dump) w linijce wywolujej printf.
+Podejrzewam,ze wina lezy w zlym wyrownaniu stosu podczas odkladania zmiennych.
+

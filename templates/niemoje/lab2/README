@@ -1,0 +1,20 @@
+W katalogu znajduje sie 6 plikow tekstowych z zadaniami na laboratorium 2. Wszystkie pliki przed uruchomieniem trzeba potraktowac poleceniami as, ld.
+Wszystkie programy pisałem na Linuxie 64-bitowym
+
+Zad1
+Program wyszukuje min i max sposrod cyfr zapianych w pliku "minmax.txt" i wyświetla je na ekranie. Przed uruchomieniem należy utworzyć plik tekstowy i wypelnic go cyframi bez znakow interpunkcyjnych. Program po uruchomieniu wyszuka najwieksza i najmniejsza cyfre.
+
+Zad2
+Program sumuje wszystkie liczby jednocyfrowe zapisane w pliku "sumuj.txt" i wynik wyswietla na ekranie. Przed uruchomieniem trzeba utworzyc plik i wypelnic go liczbami jednocyfrowymi oddzielonymi spacjami.
+
+Zad3
+Program dziala tak jak z zad1, ale przy uruchamianiu trzeba podac 2 zmienne srodowiskowe. Pierwsza to nazwa pliku, z ktorego wyszukamy min i max. Druga to wybor - czy chcemy znalezc min czy max: 1 dla max 2 dla min
+
+Zad4
+Program zapisuje wszystkie zmienne srodowiskowe do pliku tekstowego o nazwie "zmienne.txt". Przed uruchomieniem trzeba utworzyc plik tekstowy.
+
+Zad5
+Program wyszukuje podane slowo w podanym pliku tekstowym. Oba parametry trzeba podac jako zmienna srodowiskowa. Najpierw nazwe pliku a potem slowo ktorego szukamy. Na ekranie wyswietli sie liczba znalezioncyh slow.
+
+Zad6
+Dziala tak jak program 5, ale trzeba podac trzecia zmienna, ktora mowi jaki sposob wyswietlania chcemy. 1-taki jak w zad5, 2-za kazdym razem gdy program znajdzie podane slowo wyswietli "Znalazlem"

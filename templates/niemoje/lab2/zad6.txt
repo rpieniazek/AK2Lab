@@ -1,0 +1,110 @@
+.data
+	znak: .ascii "0\n"
+.text
+	error_msg: .ascii "woops! Something went wrong\0"
+	found: .ascii "Znalazlem\n"
+.global _start
+_start:
+	mov (%rsp), %r9
+	cmp $4, %r9
+	jne error
+
+	mov 32(%rsp), %rax
+	mov $0, %rcx
+	mov (%rax, %rcx, 1), %r13b
+	sub $48, %r13
+
+	mov $2, %rax
+	mov 16(%rsp), %rdi
+	mov $02, %rsi
+	syscall
+
+	mov %rax, %r8
+	mov $9, %rax
+	mov $0, %rdi
+	mov $4096, %rsi
+	mov $3, %rdx
+	mov $1, %r10
+	mov $0, %r9
+	syscall
+
+	mov 24(%rsp), %rbp
+	mov $0, %rcx
+	mov $0, %rbx
+	mov $0, %r12
+	mov (%rbp, %rbx, 1), %r10b
+	mov (%rax, %rcx, 1), %r9b
+	cmp %r10b, %r9b
+	je nastepny
+	jmp szukaj
+	
+nastepny:
+	inc %rcx
+	inc %rbx
+	mov (%rbp, %rbx, 1), %r10b
+	mov (%rax, %rcx, 1), %r9b
+	cmp $0, %r10b
+	je znalazlem
+	cmp %r10b, %r9b
+	je nastepny
+	jmp szukaj
+
+znalazlem:
+	inc %r12
+	cmp $2, %r13
+	je print_found
+	jmp szukaj
+
+szukaj:
+	cmp $0, %r9b
+	je end
+	mov $0, %rbx
+	mov (%rbp, %rbx, 1), %r10b
+	mov (%rax, %rcx, 1), %r9b
+	cmp %r10b, %r9b
+	je nastepny
+	inc %rcx
+	jmp szukaj
+end:
+	mov %rax, %rdi
+	mov $11, %rax
+	syscall
+
+	mov $3, %rax
+	mov %r8, %rdi
+	syscall
+
+	cmp $1, %r13
+	jne exit
+	add $48, %r12
+	mov %r12b, znak
+	mov $1, %rax
+	mov $1, %rdi
+	mov $znak, %rsi
+	mov $2, %rdx
+	syscall
+exit:
+	mov $60, %rax
+	mov $0, %rdi
+	syscall
+
+error:
+	mov $1, %rax
+	mov $1, %rdi
+	mov $error_msg, %rsi
+	mov $28, %rdx
+	syscall
+	jmp exit
+
+print_found:
+	push %rcx
+	push %rax
+	mov $1, %rax
+	mov $1, %rdi
+	mov $found, %rsi
+	mov $10, %rdx
+	syscall
+	pop %rax
+	pop %rcx
+	jmp szukaj
+	

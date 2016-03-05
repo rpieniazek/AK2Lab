@@ -1,0 +1,79 @@
+.data
+	znak: .ascii "0"
+.text
+	filename: .ascii "sumuj.txt\0"
+	space: .ascii " "
+.global _start
+_start:
+	mov $2, %rax
+	mov $filename, %rdi
+	mov $02, %rsi
+	syscall
+
+	mov %rax, %r8
+	mov $9, %rax
+	mov $0, %rdi
+	mov $4096, %rsi
+	mov $3, %rdx
+	mov $1, %r10
+	mov $0, %r9
+	syscall
+
+	mov $0, %rcx
+	mov %rax, %r10
+	mov (%r10, %rcx,1), %r9b
+	sub $48, %r9
+odczyt:
+	inc %rcx
+	mov (%r10, %rcx, 1), %r8b
+	cmp $10, %r8b
+	je sumuj
+	cmp space, %r8b
+	je odczyt
+	sub $48, %r8
+	add %r8, %r9
+	jmp odczyt
+
+sumuj:
+	mov %r9, %rax
+	mov $10, %rbx
+	mov $0, %rcx
+sumuj1:
+	xor %rdx, %rdx
+break1:
+	div %rbx
+break2:
+	mov %rdx, znak
+	add $48, znak
+	push znak
+	inc %rcx
+	cmp $0, %rax
+	je print
+
+	jmp sumuj1
+
+exit:
+	mov $11, %rax
+	mov %r10, %rdi
+	syscall
+
+	mov $60, %rax
+	mov $0, %rdi
+	syscall
+
+print:
+	cmp $0, %rcx
+	je exit
+	pop znak
+	push %rcx
+	mov $1, %rax
+	mov $1, %rdi
+	mov $znak, %rsi
+	mov $1, %rdx
+	syscall
+	pop %rcx
+break4:
+	dec %rcx
+	jmp print
+	
+

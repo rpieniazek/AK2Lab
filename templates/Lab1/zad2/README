@@ -1,0 +1,4 @@
+Program wczytujacy napis a nestepnie wypisujacy wprowadzony tekst na ekranie. 
+Maksymalna dlugosc tekstu to 255 znakow.
+W poszczegolnych linijkach znajduja sie komentarze.
+

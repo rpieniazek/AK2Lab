@@ -1,0 +1,4 @@
+Program drukujacy krzyzyk zozony z gwiazdek.
+Do printowania na konsoli uzywam funkcji systemowej
+Aby uniknac utracenia danych przed wywowolaniem funckji odkladam licznik petli na stos
+

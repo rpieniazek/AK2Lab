@@ -1,0 +1,17 @@
+b rez_miejsce
+display/x $pc
+display/x $rbx
+display/x $rdx
+display/x $rsi
+display/x $rdi
+display/x $rax
+display/x $r15
+display/x $14
+display/x $13
+display/x $12
+display/x $r11
+display/x $rsp
+
+
+
+

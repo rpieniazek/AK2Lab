@@ -1,0 +1,12 @@
+# reguła linkowania
+fiboncacci: fibo.o
+	gcc -g cross.o
+
+# reguła kompilacji
+fibo.o: fibonacci.s
+	as -g -o fibo.o  fibonacci.s
+
+clean:
+	rm -f *.o
+run:
+	./a.out

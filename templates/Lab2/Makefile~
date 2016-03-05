@@ -1,0 +1,12 @@
+# reguła linkowania
+stack: stack.o
+	ld stack.o -o stack
+
+# reguła kompilacji
+stack.o: stack.s
+	as stack.s -o stack.o
+
+clean:
+	rm -f *.o
+run:
+	./stack

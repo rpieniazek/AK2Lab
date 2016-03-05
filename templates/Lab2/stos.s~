@@ -1,0 +1,84 @@
+SYSEXIT	 = 1
+SYSREAD	 = 3
+SYSWRITE = 1
+
+STDIN  = 0
+STDOUT = 1
+
+EXIT_SUCCESS = 0
+
+.data
+        buf: .ascii "0"
+ 
+.text
+arguments: .ascii "Liczba argumentow: "
+arguments_length = . -arguments
+new_line: .asciz " \n"
+new_line_length = . -new_line
+ 
+ 
+.global _start
+
+
+_start:
+_break:	
+        mov (%rsp),%rdi			 # przeniesienie liczby argumentow do rdi
+	mov (%rsp),%r9 			#r9 pelni role licznika
+	
+	mov $arguments,%rsi	
+	mov $arguments_length,%rdx 	#dlugosc
+	mov $1,%rax
+	mov $1,%rdi
+	syscall 	#pojawia sie napis ilosc parametrow:
+	
+	#wyswietlenie ilosci argumentow:
+	add $48,%rdi
+	mov %rdi, (buf)	
+	mov $buf,%rsi	
+	mov $2,%rdx 	#dlugosc
+	mov $1,%rax
+	mov $1,%rdi
+	syscall 	#pojawia sie ilosc paramatrow
+
+	mov $new_line,%rsi	
+	mov $new_line_length,%rdx 	#dlugosc
+	mov $1,%rax
+	mov $1,%rdi
+	syscall 	#pojawia sie znak nowej lini:
+
+	
+	mov $0,%r11 			#ustawienie licznika adresu na 0
+Loop:
+	
+	mov 8(%rsp,%r11,8), %r13 	#wyciagniecie adresu poczatku pierwszego stringa
+	inc %r11 			#inkrementacja licznika adresu
+	mov 8(%rsp,%r11,8), %r15 	#wyciagniecie adresu poczatku konca pierwszego stringa i poczatku nastepnego
+	sub %r13,%r15 			#w r15 znajduje sie dlugosc stringa 
+	
+	push %r11
+		#wyswietlenie (wywolanie funckji systemowej)
+	
+	mov %r13,%rsi
+	mov %r15,%rdx
+	mov $1,%rax
+	mov $1,%rdi
+	syscall 	#pojawia sie ./prog
+	
+	mov $new_line,%rsi	
+	mov $new_line_length,%rdx 	#dlugosc
+	mov $1,%rax
+	mov $1,%rdi
+	syscall 	#pojawia sie znak nowej lini:
+
+	pop %r11
+	dec %r9
+	cmp $0,%r9
+	jne Loop
+	
+	mov $60,%rax		# exit syscall (x86_64)
+	mov $0,%rdi		# status = 0 (exit normally)
+	syscall
+
+	
+	
+

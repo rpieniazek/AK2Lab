@@ -1,0 +1,67 @@
+SYSCALL = 0x80 
+SYSEXIT	 = 1
+SYSREAD	 = 3
+SYSWRITE = 1
+
+STDIN  = 0
+STDOUT = 1
+
+EXIT_SUCCESS = 0
+
+.global _start
+
+_start:
+        mov (%rsp),%rdi			 # przeniesienie liczby argumentow do rdi
+	mov $0,%r11 			#ustawienie licznika adresu na 0
+	mov 8(%rsp,%r11,8), %r13 	#wyciagniecie adresu poczatku pierwszego stringa
+	inc %r11 			#inkrementacja licznika adresu
+	mov 8(%rsp,%r11,8), %r15 	#wyciagniecie adresu poczatku konca pierwszego stringa i poczatku nastepnego
+	sub %r13,%r15 			#w r15 znajduje sie dlugosc stringa 
+	
+		#wyswietlenie (wywolanie funckji systemowej)
+	
+	mov %r13,%rsi
+	mov %r15,%rdx
+	mov $1,%rax
+	mov $1,%rdi
+	syscall 	#pojawia sie ./prog
+
+	mov $60,%rax		# exit syscall (x86_64)
+	mov $0,%rdi		# status = 0 (exit normally)
+	
+	int $SYSCALL
+L1:
+        
+	
+	mov 8(%rsp,%rax,8), %rsi
+	
+	mov %rax,%r8
+	mov %rcx,%r9
+	
+	mov $1, %rax			#funkcja
+	mov $STDOUT, %rdi		#strumien
+     	mov %rdx,%rsi			#string
+    	mov $40, %rdx 			#dlugosc
+		
+     	int $SYSCALL
+    
+
+ 	mov $new_line,%rsi			#string
+    	mov $40, %rdx 			#dlugosc
+     	syscall 
+     
+	mov %r8,%rax  
+	mov %r9,%rcx 
+	inc %rax 
+	dec %rcx 	# nast rejestr
+	jnz L1
+	
+	mov $60,%rax		# exit syscall (x86_64)
+	mov $0,%rdi			# status = 0 (exit normally)
+	
+	int $SYSCALL
+
+
+
+new_line :
+	.asciz "/n"

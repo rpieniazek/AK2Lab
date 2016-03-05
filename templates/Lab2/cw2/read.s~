@@ -1,0 +1,50 @@
+SYSCALL = 0x80 
+SYSEXIT	 = 1
+SYSREAD	 = 3
+SYSWRITE = 4
+
+STDIN  = 0
+STDOUT = 1
+
+EXIT_SUCCESS = 0
+
+.data          #sekcja danych
+rozmiar = 255
+BUF:           #bufor na wczytywane z klawiatury znaki
+.space 255
+
+.global main
+
+main:   
+        movl $rozmiar, %edx
+        movl $BUF, %ecx
+        movl $STDIN, %ebx
+        movl $SYSREAD, %eax
+        int $SYSCALL
+
+        movl $STDOUT, %ebx
+        movl $SYSWRITE, %eax
+        int $SYSCALL
+
+        movl $SYSEXIT, %eax
+        int $SYSCALL
+
+      #  push    %rdi                    # w %rdi jestargc w %rsi jest argv
+      #  push    %rsi
+      #  sub     $8, %rsp                # wyrownanie stosu(?)
+
+       # mov     (%rsi), %rdi            # kopiujemy argv do rdi
+      #  call    puts                    # puts bierze zawartosć rejestru %rdi
+#
+       # add     $8, %rsp                # restore %rsp to pre-aligned value
+      #  pop     %rsi                    # restore registers puts used
+      #  pop     %rdi
+
+      #  add     $8, %rsi                # point to next argument
+     #   dec     %rdi                    # count down
+      #  jnz     main                    # if not done counting keep going
+
+     #   ret                   
+
+
+

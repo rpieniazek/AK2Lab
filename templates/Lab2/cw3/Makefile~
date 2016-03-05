@@ -1,0 +1,11 @@
+# reguła linkowania
+link: cross.o
+	gcc  cross.o
+
+# reguła kompilacji
+cross.o: cross.s
+	as -o cross.o cross.s
+
+clean:
+	rm -f *.o
+

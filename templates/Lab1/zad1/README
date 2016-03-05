@@ -1,0 +1,4 @@
+W programie wywoluje funkcje biblioteczna jezyka C (puts).
+Po etykiecie main nastepuje skopiowanie napisu do rejestru rdi.
+Rejestr rdi sluzy do przekaztwania pierwszego argumentu do funkcji
+Nastepnie wywolywana (call) jest funkcja puts. 
