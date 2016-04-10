@@ -1,0 +1,520 @@
+\documentclass[a4paper, 12pt]{article}
+
+\usepackage{a4wide}
+\usepackage[latin2]{inputenc}
+\usepackage[OT4]{fontenc}
+\usepackage[english,polish]{babel}
+\usepackage{graphicx}
+\usepackage{indentfirst}
+
+
+\usepackage[hmargin=2.5cm,vmargin=2.5cm,bindingoffset=0.5cm]{geometry}
+\renewcommand{\baselinestretch}{1}
+
+\begin{document}
+
+\thispagestyle{empty}
+\noindent
+\hfill Wroc³aw, dn.\ \today r\\
+
+\noindent
+\begin{minipage}[c]{0.4\columnwidth}
+  Jakub Pomyka³a, 209897\\
+  PN-P-8
+\end{minipage}
+
+\begin{flushright}
+\begin{minipage}[t]{0.4\columnwidth}
+\noindent
+prowadz±cy: prof. Janusz Biernat
+\end{minipage}
+\end{flushright}
+
+\hfill
+\begin{center}
+    Laboratorium Architektury Komputerów\\
+  \begin{small}
+    \emph{Podstawy uruchamiania programów asemblerowych\\
+    na platformie \emph{Linux/x86}}\\
+  \end{small}
+
+\end{center}
+
+\vspace{0.2ex}
+
+\section{Tre¶æ æwiczenia}
+\subsubsection*{Zakres æwiczenia:}
+\begin{itemize}
+\item Zapoznanie siê z podstawami pisania, linkowania i uruchamiania programów w jêzyku assembler.
+\end{itemize}
+
+\section{Przebieg æwiczenia}
+\label{sec:przebieg-cwiczenia}
+
+
+W celu uruchomienia powy¿szego programu nale¿a³o skompilowaæ, a nastêpnie skonsolidowaæ przy pomocy poni¿szych instrukcji.
+
+\begin{verbatim}
+#kompilacja
+as lab.s -o lab.o	
+
+#konsolidacja
+ld lab.o -o lab 	
+
+#uruchomienie
+./lab				
+\end{verbatim}
+
+\subsection{Wczytywanie znaków z klawiatury do bufora}
+Program mia³ zapisaæ znaki wprowadzone przez u¿ytkownika do bufora o nazwie \texttt{bufor}. 
+\begin{verbatim}
+%kod	
+\end{verbatim}
+
+
+\subsection{Operacje na znakach w buforze}
+
+
+Powy¿szy fragment programu przygotowuje do wykonania i wykonuje
+funkcjê systemow± \texttt{SYSWRITE}\@. U¿yta na pocz±tku dyrektywa
+\texttt{.global} ma za zadanie zdefiniowanie punktu wej¶cia do
+programu, czyli poinformowanie systemowego programu ³aduj±cego o
+punkcie, w którym powinno zacz±æ siê jego wykonanie.
+
+Jak widaæ z powy¿szego fragmentu kodu, wywo³anie funkcji systemowych
+na platformie \emph{Linux/x86} polega na
+\begin{enumerate}
+\item umieszczeniu numeru funkcji w rejestrze procesora \texttt{eax},
+\item umieszczeniu jej argumentów w rejestrach \texttt{ebx},
+  \texttt{ecx}, \texttt{...},
+\item wykonanie przerwania programowego \texttt{0x80}.
+\end{enumerate}
+Nale¿y tu zauwa¿yæ, ¿e sk³adnia poszczególnych instrukcji i trybów
+adresowania jest odmienna od tej stosowanej na platformie \emph{DOS/WINDOWS}
+-- np.\ kolejno¶æ argumentów instrukcji jest odwrotna (od lewej do
+prawej)\@.
+
+Ostatni krok, który nale¿y wykonaæ aby dokoñczyæ program, to wywo³anie
+funkcji systemowej \texttt{SYSEXIT} z argumentem
+\texttt{EXIT\_SUCCESS}\@. Operacja ta jest przygotowywana
+analogicznie.
+\begin{verbatim}
+  mov $SYSEXIT, %eax      ; funkcja do wywo³ania - SYSEXIT
+  mov $EXIT_SUCCESS, %ebx ; 1 arg. -- kod wyj¶cia z programu
+  int $0x80               ; wywo³anie przerwania programowego -
+                          ; wykonanie funcji systemowej.
+
+\end{verbatim}
+
+\subsection{Uruchomienie programu pod kontrol± \texttt{gdb}}
+\label{sec:uruch-prog-gdb}
+
+Dziêki przygotowanemu plikowi \texttt{Makefile} proces kompilacji
+programu sprowadza³ siê do wydania pow³oce polecenia \texttt{make}\@.
+\begin{verbatim}
+[kberezow@localhost src]$ make
+as -o hello.o hello.s
+ld -o hello hello.o
+[kberezow@localhost src]$
+
+\end{verbatim}
+
+Uruchomienie go pod kontrol± programu \texttt{gdb} nastêpuje poprzez
+wydanie polecenia \texttt{gdb hello}\@. Przyk³ad kompletnej sesji z
+programem \texttt{gdb} uwidoczniony jest na
+rys.~\ref{fig:gdb-sesja1}\@.
+\begin{figure}[t]
+      \centering
+  \begin{minipage}[c]{0.95\textwidth}
+    \hrulefill
+    \begin{small}
+\begin{verbatim}
+[kberezow@localhost src]$ gdb hello
+GNU gdb 5.3-22mdk (Mandrake Linux)
+Copyright 2002 Free Software Foundation, Inc.
+GDB is free software, covered by the GNU General Public License, and you are
+welcome to change it and/or distribute copies of it under certain conditions.
+Type "show copying" to see the conditions.
+There is absolutely no warranty for GDB.  Type "show warranty" for details.
+This GDB was configured as "i586-mandrake-linux-gnu"...
+(gdb) run
+Starting program: /home/kberezow/projects/AK/src/hello
+Hello, world!
+
+Program exited normally.
+(gdb) quit
+[kberezow@localhost src]$
+
+\end{verbatim}
+    \end{small}
+    \hrulefill
+  \end{minipage}
+\caption{Przebieg najkrótszej sesji uruchomieniowej dla programu
+  \texttt{hello} w ¶rodowisku \texttt{gdb}\@.}
+  \label{fig:gdb-sesja1}
+\end{figure}
+
+Pod kontrol± programu \texttt{gdb} mo¿na uruchomiæ program w trybie
+pracy krokowej b±d¼ ci±g³ej oraz podejrzeæ zarówno tekst programu jak
+i warto¶ci zawarte w pamiêci i rejestrach procesora. W przypadku
+naszego pierwszego programu mo¿emy uzyskaæ jedynie wtórnie rozkodowany
+tekst programu, gdy¿ nie umie¶cili¶my ¿adnej informacji
+uruchomieniowej w~jego tre¶ci.
+\begin{verbatim}
+(gdb) disassemble _start
+Dump of assembler code for function _start:
+0x804808e <_start>:     mov    $0x4,%eax
+0x8048093 <_start+5>:   mov    $0x1,%ebx
+0x8048098 <_start+10>:  mov    $0x8048080,%ecx
+0x804809d <_start+15>:  mov    $0xe,%edx
+0x80480a2 <_start+20>:  int    $0x80
+0x80480a4 <_start+22>:  mov    $0x1,%eax
+0x80480a9 <_start+27>:  mov    $0x0,%ebx
+0x80480ae <_start+32>:  int    $0x80
+End of assembler dump.
+(gdb)
+
+\end{verbatim}
+Jak widaæ wy¶wietlony program odpowiada (z dok³adno¶ci± do wyliczonych
+warto¶ci etykiet) zawarto¶ci pliku ¼ród³owego.
+
+Program uruchomieniowy mo¿emy równie¿ wykorzystaæ do podejrzenia
+zawarto¶ci pamiêci, np.\ u¿ywaj±c polecenia
+\texttt{p[rint]}\footnote{Program \texttt{gdb} umo¿liwia skracanie
+  nazw poleceñ, je¿eli powsta³y w wyniku tego procesu skrót jest
+  jednoznaczny w obrêbie zbioru jego poleceñ. Aby odzwierciadliæ tê
+  w³asno¶æ, zachowuj±c równocze¶nie przejrzysto¶æ tre¶ci sprawozdania,
+  bêdziemy wyró¿niaæ czê¶æ polecenia, któr± mo¿na bezpiecznie odrzuciæ
+  stosuj±c nawiasy kwadratowe \texttt{[]}\@.}\@.
+\begin{verbatim}
+(gdb) print {char}0x8048080
+$6 = 72 'H'
+(gdb) print {char}(0x8048080+1)
+$8 = 101 'e'
+(gdb) print {char}(0x8048080+2)
+$9 = 108 'l'
+(gdb) print {char}(0x8048080+3)
+$10 = 108 'l'
+(gdb) print {char}(0x8048080+4)
+$11 = 111 'o'
+(gdb) print {char}(0x8048080+5)
+$12 = 44 ','
+(gdb) print {char}(0x8048080+6)
+$13 = 32 ' '
+(gdb) print {char}(0x8048080+7)
+$14 = 119 'w'
+(gdb) print {char}(0x8048080+8)
+$15 = 111 'o'
+(gdb) print {char}(0x8048080+9)
+$16 = 114 'r'
+(gdb) print {char}(0x8048080+10)
+$18 = 108 'l'
+(gdb) print {char}(0x8048080+11)
+$19 = 100 'd'
+(gdb) print {char}(0x8048080+12)
+$20 = 33 '!'
+(gdb) print {char}(0x8048080+13)
+$21 = 10 '\n'
+(gdb)
+
+\end{verbatim}
+
+Ze wzglêdu na to, ¿e w pakiecie kompilatorów \texttt{GNU gcc}
+informacjê pomocnicz± dla programu uruchomieniowego kompilatory
+umieszczaj± na poziomie kodu asemblerowego, aby przeprowadziæ bardziej
+zaawansowane operacje ¶ledzenia przebiegu wykonania programu, nale¿y
+skompilowaæ nasz program kompilatorem jêzyka C, w trybie z
+uzupe³nianiem informacji uruchomieniowej (opcja kompilatora
+\texttt{-g})\@. Oznacza to, ¿e aby precyzyjnie ¶ledziæ przebieg
+programów aseblerowych musieli¶my zmieniæ nasz plik steruj±cy
+\texttt{Makefile} np.\ do nastêpuj±cej postaci:
+\begin{verbatim}
+# regu³a kompilacji i linkowania
+hello: hello.s
+  gcc -g -o hello hello.s
+
+\end{verbatim}
+a punkt wej¶cia do programu zmieniæ z \texttt{.global \_start} do
+\texttt{.global main} tak, aby zapewniæ poprawno¶æ ³±czenia z
+programem startowym jêzyka C\@.
+
+Dziêki takim zmianom mogli¶my zastosowaæ krokowe ¶ledzenie przebiegu
+naszego programu, korzystaj±c z nastêpuj±cych poleceñ programu
+\texttt{gdb} \cite{GDBINFO}:
+\begin{itemize}
+\item \texttt{b[reak]} -- ustawienie pu³apki,
+\item \texttt{r[un]} -- uruchomienie programu,
+\item \texttt{s[tep], n[ext]} -- wykonanie kroku w pracy krokowej (omówienie
+  ró¿nic pomiêdzy poleceniami \texttt{s} i \texttt{n} mo¿na znale¼æ
+  siê w \cite{GDBINFO}),
+\item \texttt{inf[o]} -- wy¶wietlenie informacji o wykonywanym
+  programie (np.\ \texttt{inf[o] reg[is\-ters])}.
+\end{itemize}
+Przebieg typowej sesji pracy krokowej, wykazuj±cy nabyte umiejêtno¶ci
+pracy z programem uruchomieniowym, widoczny jest poni¿ej.
+\begin{verbatim}
+(gdb) b main
+Breakpoint 1 at 0x804832e: file hello.s, line 20.
+(gdb) run
+Starting program: /home/kberezow/projects/AK/src/hello
+l
+Breakpoint 1, main () at hello.s:20
+20        mov $SYSWRITE, %eax
+Current language:  auto; currently asm
+(gdb) list
+15      msg_hello_len = . - msg_hello
+16
+17      .global main
+18
+19      main:
+20        mov $SYSWRITE, %eax
+21        mov $STDOUT, %ebx
+22        mov $msg_hello, %ecx
+23        mov $msg_hello_len, %edx
+24        int $0x80
+(gdb) info registers
+eax            0x1      1
+ecx            0x401517c8       1075124168
+edx            0x0      0
+ebx            0x40153f50       1075134288
+esp            0xbffff50c       0xbffff50c
+ebp            0xbffff528       0xbffff528
+esi            0x40012780       1073817472
+edi            0xbffff554       -1073744556
+eip            0x804832e        0x804832e
+eflags         0x246    582
+cs             0x23     35
+ss             0x2b     43
+ds             0x2b     43
+es             0x2b     43
+fs             0x0      0
+gs             0x0      0
+fctrl          0x37f    895
+fstat          0x0      0
+ftag           0xffff   65535
+fiseg          0x0      0
+fioff          0x0      0
+foseg          0x0      0
+fooff          0x0      0
+fop            0x0      0
+mxcsr          0x0      0
+orig_eax       0xffffffff       -1
+(gdb) s
+21        mov $STDOUT, %ebx
+(gdb)
+22        mov $msg_hello, %ecx
+(gdb)
+23        mov $msg_hello_len, %edx
+(gdb)
+24        int $0x80
+(gdb)
+Hello, world!
+27        mov $EXIT_SUCCESS, %ebx
+(gdb)
+
+\end{verbatim}
+
+
+
+\section{Podsumowanie i wnioski}
+\label{sec:pods-i-wnioski}
+
+
+Wykonane æwiczenie pozwoli³o nam opanowaæ umiejêtno¶ci tworzenia i
+uruchamiania programów asemblerowych na platformie \emph{Linux/x86}\@.
+Jego wykonanie u¶wiadomi³o nam, i¿ pomiêdzy platform± \emph{Linux/x86},
+a znan± nam wcze¶niej platform± \emph{DOS/WINDOWS} istniej± zarówno
+podobieñstwa jak i ró¿nice.
+
+Pierwsz± zaobserwowan± i dotkliw± dla nas ró¿nic± jest odmienna
+sk³adnia asemblera, niezgodna ze sk³adni± propagowan± przez firmê
+\emph{INTEL}\@. Dla programisty, który naby³ ju¿ pewnych do¶wiadczeñ w
+tworzeniu programów asemblerowych dla systemów \emph{DOS/WIN\-DOWS},
+szczególnie niebezpieczna mo¿e byæ odwrotna kolejno¶æ argumentów
+instrukcji asemblera w sk³adni AT\&T stosowanej w asemblerze
+\texttt{GNU as}, gdy¿ mo¿e prowadziæ do generowania trudnych do
+wykrycia b³êdów semantycznych. Drug± istotn± ró¿nic±, jest brak
+mo¿liwo¶ci wygenerowania informacji dla programu uruchomieniowego w
+procesie asemblacji programów, która zmusza do uruchamiania programów
+asemblerowych w ¶rodowisku kompilatora jêzyka C b±d¼ C++\@. To
+wszystko powoduje, i¿ zmiana platformy z~\emph{DOS/WINDOWS} na
+\emph{Linux/x86} raczej nie bêdzie intuicyjna dla programisty
+asemblera.
+
+Pomimo wystêpowania ró¿nic, na bazie stworzonego programu, mo¿emy
+równie¿ zauwa¿yæ, ¿e wystêpuj± istotne podobieñstwa w sposobie
+komunikacji pomiêdzy programem u¿ytkowym a systemem. Zarówno w
+systemie \emph{DOS} jak i \emph{Linux} stosuje siê instrukcjê
+przerwania programowego. Zwraca uwagê uporz±dkowany sposób
+przekazywania argumentów do funkcji systemowych, który, w
+przeciwieñstwie do systemu \emph{DOS}, jest bardzo intuicyjny.
+
+Odmienny, w stosunku do znanego z systemu \emph{DOS} programu
+\emph{Turbo Debugger} (\texttt{td.exe}), jest równie¿ sposób pracy z
+programem uruchomieniowym -- choæ zestaw dostêpnych poleceñ s³u¿±cych
+do analizy programów jest w du¿ej mierze podobny, a byæ mo¿e nawet
+szerszy, to praca z tym narzêdziem wymaga od programisty wiêkszej
+wiedzy o nim samym.  Przede wszystkim, w programie \texttt{gdb},
+programista jest zmuszony do tego, aby wszystkie informacje zwi±zane z
+przebiegiem uruchamianego programu uzyskiwaæ wydaj±c w³a¶ciwe
+polecenia -- w zasadzie ¿adna informacja, poza ca³kowicie podstawow±,
+nie jest dostarczana przez program samoczynnie. Jest to zwi±zane z
+tym, ¿e program \texttt{gdb} jest przystosowany do pracy z ró¿nymi
+interfejsami u¿ytkownika, a tak¿e mo¿e byæ osadzany w ¶rodowisku
+innych programów \cite{GDBINFO}\@.  Przyk³adem mog± byæ tu programy
+dostarczaj±ce rozbudowany interfejs graficzny dla ró¿nych programów
+uruchomieniowych, jak \emph{Data Display Debugger} (\texttt{ddd}), czy
+mo¿liwo¶æ uruchamiania i analizy programów bezpo¶rednio w ¶rodowisku
+edytora \emph{EMACS} zademonstrowana na rys.  \ref{fig:emacs-gud1}\@.
+
+
+
+\begin{thebibliography}{99}
+\addcontentsline{toc}{section}{Bibliografia}
+\bibitem{BIER03} J.~Biernat, \emph{Profesjonalne przygotowanie publikacji},
+  materia³y konferencyjne X Krajowej Konferencji KOWBAN,
+  str.\ 401--408, Wyd. WTN, Wroc³aw, 2003.
+  
+\bibitem{WEGR03} M.~Wêgrzyn, \emph{Zastosowanie pakietu MS Word do
+    przygotowania publikacji naukowych}, materia³y
+  konferencyjne X Krajowej Konferencji KOWBAN, str.\ 409--414, Wyd.
+  WTN, Wroc³aw, 2003.
+\bibitem{POLA97} E.~Polañski i inni, Nowy s³ownik ortograficzny PWN z zasadami
+pisowni i interpunkcji, PWN, Warszawa, 1997
+\bibitem{SYSCALL} \texttt{/usr/include/asm/unistd.h}, plik nag³ówkowy
+  kompilatora \texttt{gcc} z list± kodów funkcji systemowych systemu
+  \emph{Linux}.
+\bibitem{ASINFO} \texttt{info gas}, dokumentacja \texttt{info}
+  asemblera \texttt{GNU as}. 
+\bibitem{GDBINFO} \texttt{info gdb}, dokumentacja \texttt{info}
+  programu \texttt{GNU gdb}.
+\bibitem{LDINFO} \texttt{info ld}, dokumentacja \texttt{info}
+  programu \texttt{GNU ld}.
+\bibitem{MAKEINFO} \texttt{info make}, dokumentacja \texttt{info}
+  programu \texttt{GNU make}.
+\bibitem{LINUXAS} \texttt{http://www.linuxassembly.org}, witryna
+  internetowa z informacjami dla programistów asemblera dla platformy
+  \emph{Linux/x86}.
+
+\end{thebibliography}
+
+\newpage
+\appendix
+\begin{small}
+\section{Wytyczne i uwagi dotycz±ce dokumentu sprawozdania}
+\label{sec:wytyczne}
+
+\subsection{Uwagi ogólne}
+\label{sec:uwagi-ogolne}
+
+Zgodnie z og³oszonymi wcze¶niej za³o¿eniami dotycz±cymi
+sprawozdawczo¶ci, sprawozdania \underline{nie} zawieraj± wstêpów
+teoretycznych czy omówienia u¿ytych narzêdzi w zakresie szerszym ni¿
+to wynika z tematu æwiczenia (\emph{vide\/}: brak omówienia programu
+\texttt{make} i formatu plików \texttt{Makefile} w~niniejszym
+dokumencie).
+
+Sprawozdanie powinno byæ strony formy wypowiedzi zbli¿one do
+rozprawki. Tym bardziej uczulam Pañstwa na tre¶ci zawarte w
+podrozdziale \ref{sec:pods-i-wnioski}\@. Zawarty tam tekst powinien
+miêdzy innymi w syntetyczny sposób posumowaæ nabyt± wiedzê. Poza tym,
+jest tam miejsce na Pañstwa przemy¶lenia i obserwacje. Ostrzegam, ¿e
+ta czê¶æ sprawozdania -- niew³a¶ciwie napisana czy niestarannie
+przemy¶lana -- mo¿e Pañstwa kosztowaæ najwiêcej punktów. Nie oznacza
+to jednak, ¿e brak sformu³owania tez (celu æwiczenia) we wprowadzeniu
+ujdzie Pañstwu na sucho!
+
+
+\subsection{Wymagania sk³adu}
+\label{sec:techn-strona-skladu}
+
+Uk³ad strony i akapitów powinien zachowywaæ nastêpuj±ce w³asno¶ci:
+\begin{itemize}
+\item krój czcionki podstawowej -- \emph{Times}, 12pt (\emph{Computer
+    Modern}, 12pt),
+\item interlinia -- 1.5,
+\item marginesy -- lewy, prawy, górny, dolny -- 2,5 cm,
+\item nag³ówki numerowane (preferowane cyfry arabskie),
+\item strony numerowane (preferowane cyfry arabskie) od strony
+  tytu³owej, jednak¿e bez umieszczania numeru na stronie tytu³owej,
+\item wyrównanie tekstu obustronne, dzielenie wyrazów opcjonalne,
+\item rysunki i tabele opatrzone numerem i tytu³em, umieszczane na
+  górze b±d¼ na dole strony (nie w ci±gu akapitu),
+\item odniesienia do rysunków/tabel w tekscie poprzez podanie numeru
+  rysunku,
+\item cytaty z kodu ¼ród³owego umieszczane w ci±gu akapitu lub jako
+  rysunki,
+\item strona tytu³owa zgodna z dostarczonym wzorcem.
+\end{itemize}
+
+Proszê o wprowadzanie i stosowanie konwencji typograficznych
+zwi±zanych z przytaczaniem nazw w³asnych, symbolicznych, cytowaniem
+kodu czy wyj¶cia programów. Konwencje takie przyjmuj± Pañstwo i
+pielêgnuj± na w³asn± rêkê, jednak¿e konsekwencja ich przestrzegania
+podlega ocenie.
+
+Szczê¶liwi u¿ytkownicy systemu \LaTeXe{} mog± pos³u¿yæ siê plikiem
+¼ród³owym niniejszego dokumentu jako wzorcem do konstrukcji w³asnych
+sprawozdañ i zapomnieæ o znakomitej wiêkszo¶ci problemów sk³adu.
+U¿ytkownicy edytora \emph{MS Word} powinni na w³asn± rêkê przygotowaæ
+w³a¶ciwy szablon dokumentu. Tym ostatnim polecam lekturê artyku³ów
+\cite{BIER03,WEGR03}, których wersje elektroniczne byæ mo¿e posiada
+prof.~J.~Biernat, a do wgl±du i odbicia dostêpne s± równie¿ u~mnie.
+
+\subsection{Jêzyk}
+\label{sec:jezyk}
+
+Przypominam, ¿e jêzykiem urzêdowym w naszym kraju jest jêzyk polski
+co oznacza, ¿e nale¿y przestrzegaæ w³a¶ciwych mu zasad \cite{POLA97}:
+\begin{itemize}
+\item interpunkcji (!),
+\item stylu (!!),
+\item gramatyki (!!!) oraz
+\item ortografii (!!!!).
+\end{itemize}
+Zwracam wiêc uwagê na to, ¿e z powy¿szej listy zasad, narzêdzia
+automatycznej korekty zadowalaj±co radz± sobie jedynie z ortografi±.
+
+\noindent
+\textbf{UWAGA:} pozostawianie jednoliterowych spójników (a, i, w, z,
+...) na koñcu wiersza, choæ dopuszczone przez Radê Jêzyka Polskiego,
+wci±¿ powszechnie uwa¿a siê za brak profesjonalizmu w przygotowywaniu
+dokumentów.
+
+
+\subsection{Informacje o autorach}
+\label{sec:inform-o-autor}
+
+Kod zespo³u (umieszczany w lewym górnym rogu strony tytu³owej) sk³ada
+siê z czterech elementów rozdzielonych znakiem \texttt{`/'}. Kolejne
+pola oznaczaj±:
+\begin{enumerate}
+\item \texttt{XX} -- dzieñ tygodnia (warto¶ci: \texttt{PN},
+  \texttt{WT}, \texttt{SR}, \texttt{CZ}, \texttt{PT},
+\item \texttt{Y} -- ,,parzysto¶æ'' tygodnia (warto¶ci: \texttt{P},
+  \texttt{N}),
+\item \texttt{ZZ} -- godzina rozpoczêcia zajêæ (warto¶ci przyk³adowe:
+  \texttt{08}, \texttt{11}, ...)
+\item \texttt{T} -- numer zespo³u: {warto¶ci przyk³adowe: \texttt{1},
+    \texttt{2}, ...}
+\end{enumerate}
+Dwuelementowa lista autorów umieszczana pod kodem zespo³u powinna byæ
+rosn±co posortowana ze wzglêdu na nazwiska (oczywi¶cie stosujemy
+sortowanie leksykograficzne).
+
+
+\subsection{Podsumowanie}
+\label{sec:podsumowanie}
+
+Przygotowanie ca³o¶ci tego dokumentu, wraz ze stworzeniem i
+uruchomieniem programu \texttt{,,Hello, world!''} oraz przygotowaniem
+niniejszego komentarza, zajê³o mi oko³o czterech godzin, wiêc nie jest
+to dla Pañstwa wysi³ek ponad miarê!
+\end{small}
+
+\end{document}
+
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-master: "sprawozdanie"
+%%% End: 
