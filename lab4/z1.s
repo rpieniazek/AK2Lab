@@ -13,7 +13,7 @@ bufor_len = . - bufor
 outputBufor: .ascii "wynik:         \n"
 outputBuforLen=.-outputBufor
 
-
+###########################################################
 .text
 .global _start
 
@@ -21,31 +21,44 @@ outputBuforLen=.-outputBufor
 _start:
 
 	call processInputNumber	#wczytaj i przetworz pierwsza liczbe
-	jmp out
 
-    	pushl $edx       #factorial of this value will be calculated
+	pushl $edx       #factorial of this value will be calculated
 	call Fact
 	
- 	movl %eax, %ebx #eax contains the result, Result is the return val of the program
-    	movl $1, %eax
-    	int $0x80
-    	ret
+ 	call processOutputNumber
+	jmp out
 
-Fact:
-    popl %ebx     #Return address
-    popl %edx
-    movl $1, %ecx #Will be used as a counter
-    movl $1, %eax #Result(Partial & complete) will be stored here
-    LOOP:
-        mul %ecx
-        inc %ecx
-        cmp %ecx, %edx
-        jle LOOP
-    pushl %ebx    #Restore the return address
-    ret
+    	
+    	
+############################################################	
+
+factorial:
+	push %ebp
+	mov %esp, %ebp 		#nowy wskaznik ramki
+	mov 8(%ebp), %eax 	# pobranie parametru z wnetrza stosu
+	cmp $1, %eax		# Sprawdzenie warunku zatrzymania
+	je factorial_end
+
+	dec %ebx		# zmniejsz licznik poziomu iteracji
+	push %ebx	
+	call factorial		# wywolaj funkcje rekurencyjnie
+		#add $8, %esp#wyrównaj stos?
+	mov 8(%ebp), %ebx	
+	imul %ebx		#oblicz iloraz poziomu rekurencji
+
+	jmp factorial_end	# zakoncz funkcje
+
+factorial_base:
+	# Return value 1
+	mov $1, %eax
+factorial_end:
+	# Restore pointer
+	mov %ebp, %esp
+	pop %rbp 		# przywróć rejestry
+	ret 			# Return
 
 
-###########################
+##########################################
 processInputNumber:	#wczyta i przetworzy napis podany na wejsciu na liczbe dziesietna, wyniki w %edx
 
 	#wczytanie
@@ -77,6 +90,7 @@ break1:		ret
 	inc %edi
 	jmp L1
 
+######################################################
 processOutputNumber:	#przetworzy dane z eax na ciag łańcuchów ascii i wynik przechowa w buforze
 
 	mov $BASE,%ebx
@@ -90,9 +104,9 @@ br:	mov $outputBuforLen-2, %ecx
 	cmp $0,%eax
 	jne L3
 	ret			
+############################################################
+out:		#wyswietlenie
 
-out:
-#wyswietlenie
 	movl $outputBuforLen, %edx
 	movl $outputBufor, %ecx
 	movl $STDOUT, %ebx
