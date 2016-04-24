@@ -1,0 +1,11 @@
+# reguła linkowania
+zad2: zad2.o
+	gcc zad2.o -o zad2
+
+# reguła kompilacji
+zad2.o: zad2.c
+	gcc zad2.c -o zad2.o
+clean:
+	rm -f *.o
+run:
+	./zad1

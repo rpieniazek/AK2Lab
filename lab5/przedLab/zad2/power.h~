@@ -1,0 +1,5 @@
+#ifndef POWER
+#define POWER
+int power(int base,int exp);
+
+#endif
