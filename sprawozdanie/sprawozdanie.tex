@@ -11,6 +11,30 @@
 \usepackage[hmargin=2.5cm,vmargin=2.5cm,bindingoffset=0.5cm]{geometry}
 \renewcommand{\baselinestretch}{1}
 
+\makeatletter
+\@addtoreset{section}{part}
+\def\@part[#1]#2{%
+    \ifnum \c@secnumdepth >\m@ne
+      \refstepcounter{part}%
+      \addcontentsline{toc}{part}{\thepart\hspace{1em}#1}%
+    \else
+      \addcontentsline{toc}{part}{#1}%
+    \fi
+    {\parindent \z@ \raggedright
+     \interlinepenalty \@M
+     \normalfont\centering
+     %\ifnum \c@secnumdepth >\m@ne
+      % \LARGE\bfseries \partname\nobreakspace\thepart
+       %\par\nobreak
+     %\fi
+     \huge \bfseries #2%
+     \markboth{}{}\par}%
+    \nobreak
+    \vskip 3ex
+    \@afterheading}
+\renewcommand\partname{Topic}
+\makeatother
+
 \begin{document}
 
 \thispagestyle{empty}
@@ -19,7 +43,7 @@
 
 \noindent
 \begin{minipage}[c]{0.4\columnwidth}
-  Jakub Pomyka³a, 209897\\
+  Rafa³ Pieni±¿ek, 209847\\
   PN-P-8
 \end{minipage}
 
@@ -29,18 +53,664 @@
 prowadz±cy: prof. Janusz Biernat
 \end{minipage}
 \end{flushright}
-
+% ---------------------1----------------------------------------------------
 \hfill
 \begin{center}
     Laboratorium Architektury Komputerów\\
   \begin{small}
-    \emph{Podstawy uruchamiania programów asemblerowych\\
-    na platformie \emph{Linux/x86}}\\
+    \emph{(1)Tworzenie prostych konstrukcji programowych z u¿yciem instrukcji asemblera \emph{Linux/x86}}\\
   \end{small}
 
 \end{center}
 
 \vspace{0.2ex}
+\section{Tre¶æ æwiczenia}
+Zakres æwiczenia:
+\begin{itemize}
+\item Nabycie umiejêtno¶ci zwi±zanych z tworzeniem prostych pêtli oraz instrukcji warunkowych z
+u¿yciem assemblera.
+\end{itemize}
+
+\section{Przebieg æwiczenia}
+\label{sec:przebieg-cwiczenia}
+\subsection{Zamiana wielko¶ci liter}
+
+Na pocz±tku laboratoriów zosta³ przygotowany prosty program przetwarzaj±cy wprowadzone dane. Program wczytywa³ dane wprowadzane z klawiatury, zamienia³ wszystkie litery na ma³e. Program by³ zabezpieczony przed wprowadzaniem niepoprawnych danych. Ci±g znaków z bufora by³ przetwarzany do momentu napotkania znaku nowej linii.
+\begin{verbatim}
+ SYSCALL32 = 0x80
+ 
+ EXIT = 1
+ WRITE = 4
+ READ = 3
+ STDOUT = 1
+ MASK = 0x20 		#maska zamieniajaca kazda litere na wielka 0010 0000
+ 
+ .data
+ bufor: .space BUFOR_SIZE	#
+ bufor_len = . - bufor 
+ 
+ .text
+ .global _start
+ 
+ _start:
+ 
+ 	movl $bufor_len, %edx	#wczytanie
+ 	movl $bufor, %ecx
+ 	movl $STDOUT, %ebx
+ 	movl $READ, %eax
+ 	
+ 	int $SYSCALL32	
+ 	#pocz±tek przetwarzenia						
+ 	xorl %edi, %edi 	#inicjalizacja wskaznika
+ 	
+ loop:
+ 		
+ 	movb bufor(,%edi,1), %al #skopiowanie  znaku z bufora do rejestru
+ 	
+ 	cmpb $'\n',%al 		#sprawdzamy, czy przetworzono juz cala linie
+ 	je print				
+ 
+ 	orb $MASK, %al 		#zamiana wszystkich liter na male
+ 	
+ 	cmpb $'a', %al 		#sprawdzenie, czy znak jest liter±
+ 	jl break
+ 	cmpb $'z', %al
+ 	jg break
+ 
+ 	movb %al,bufor(,%edi,1)#skopiowanie znaku do bufora
+ 
+ 	break:
+ 	incl %edi		#inkrementacja wskaznika
+ 	jmp loop
+ 
+ 	print:				#wyswietlenie
+ 	movl $bufor_len, %edx
+ 	movl $bufor, %ecx
+ 	movl $STDOUT, %ebx
+ 	movl $WRITE, %eax
+ 	
+ 	int $SYSCALL32
+ 	
+ 	movl $EXIT, %eax
+ 	int $SYSCALL32
+ 
+\end{verbatim}
+
+Program zosta³ skompilowany i uruchomiony przy pomocy poni¿szego polecenia. Zaobserwowano poprawne dzia³anie.
+\begin{verbatim}
+	as cw1.s
+\end{verbatim}
+\subsection{Szyfr Cezara}
+Kolejnym zadaniem by³o zaimplementowanie algorytmu szyfrowania szyfrem Cezara. Kluczem by³ pierwszy znak wczytany z klawiatury. Je¿eli wczytany klucz by³ wielk± liter± algorytm szyfrowa³ napis, w przeciwnym przypadku nastêpowa³o deszyfrowanie.
+\begin{verbatim}
+SYSCALL32 = 0x80
+
+EXIT = 1
+WRITE = 4
+READ = 3
+STDOUT = 1
+MASK = 0x20 #maska zamieniajaca rozmiar liter
+
+.data
+bufor: .space BUFOR_SIZE
+bufor_len = . - bufor 
+
+.text
+.global _start
+#male deszyfrowanie
+#wielkie szyfrowanie
+
+_start:
+
+	#wczytanie
+	movl $bufor_len, %edx
+	movl $bufor, %ecx
+	movl $STDOUT, %ebx
+	movl $READ, %eax
+	
+	int $SYSCALL32
+	
+	xorl %edi, %edi 				#inicjalizacja wskaznika
+	movb bufor(,%edi,1), %bl 		#wczytanie parametru szyfru
+	incl %edi
+
+	or $0x40, %bl 					#duze kody maj± kody 0x41,0x42....
+	cmpb $'Z',%bl					#jezeli wielka to szyfrujemy
+	jbe prepare_encrypt
+prepare_decrypt:					#w przeciwnym przypadku deszyfrujemy
+	subb $'a', %bl	
+	negb %bl
+	jmp cipher
+	
+	
+prepare_encrypt:	
+	subb $'A', %bl
+	#movb $' ',bufor(,$0,1) 	#ukrycie klucza
+
+cipher:							
+	movb bufor(,%edi,1), %al	#pobranie znaku z bufora
+	cmpb $'\n',%al		#sprawdzenie, czy nie nast±pi³ znak koñca nowej linii
+	je out
+
+	orb $MASK, %al 		#zamiana wszystkich liter na male
+	cmpb $'a', %al 		#sprawdzenie, czy znak jest liter±
+	jl hop				
+	cmpb $'z', %al
+	jg hop
+	
+	addb %bl, %al		#szyfrowanie
+
+	cmpb $'z',%al	 	#koreka szyfru
+	jle hop
+	subb $'z', %al
+	addb $'a', %al
+	
+	hop:
+	movb %al,bufor(,%edi,1)	#wpisanie przetworzonego napisu do bufora
+	incl %edi				#zwiêkszenie wska¼nika
+	jmp cipher
+	
+	out:
+	movl $bufor_len, %edx	#wyswietlenie
+	movl $bufor, %ecx
+	movl $STDOUT, %ebx
+	movl $WRITE, %eax
+	
+	int $SYSCALL32
+	
+	movl $EXIT, %eax
+	int $SYSCALL32
+
+\end{verbatim}
+
+Program wczytuje pierwszy znak i rozpoznaje jej rozmiar. Na tej podstawie obliczony jest klucz, który jest ujemny dla deszyfrowania i dodatni dla szyfrowania. Nastêpnie algorytm przetwarza kolejne znaki wczytane z bufora. Po skopiowaniu pojedynczej litery dodawany jest do niej klucz. Nastêpnie szyfr jest korygowany. Je¿eli po dodaniu, lub odjêciu klucza warto¶æ znajdzie siê poza zakresem alfabetu nastêpuje odpowiednia poprawka. Program zosta³ uruchomiony przy pomocy poni¿szych poleceñ. Po przetestowaniu stwierdzono poprawne dzia³anie.
+
+\begin{verbatim}
+as cezar.s -o cezar.o
+ld cezar.o -o cezar
+./cezar
+\end{verbatim}
+\subsection{Konwersje liczbowe}
+	\subsubsection{Konwersja wej¶ciowa}
+	Kolejnym etapem by³o przygotowanie programów wczytuj±cych napisy w postaci cyfr i zamieniaj±cych je na liczby. Przygotowano uniwersaln± funkcjê wczytuj±c± ci±g cyfr do bufora,zamieniaj±c± j± na liczbê o podstawie danej sta³± zdefiniowan± w programie. W celu zachowania czytelno¶ci pominiêto powtarzaj±ce siê elementy programu. Funkcja jest w stanie dekodowaæ liczby zapisane w systemie o podstawie maksymalnie równej 16. Algorytm jest oparty na schemacie Hornera.
+	\begin{verbatim}
+	...
+	BASE = 16
+	
+	.text
+	.global _start
+	_start:
+
+	#wczytanie
+	...
+		
+	mov $0,%edx		#wynik
+	mov $0,%edi		#wskaznik
+	mov $0,%ecx		#rejestr do przechowywania aktualnej cyfry
+
+L1:
+	movb bufor(,%edi,1), %cl
+		
+	cmpb $'\n',%cl	#sprawdzenie, czy nie nast±pi³ koniec bufora
+	jne L2	
+	ret
+L2:
+	mov $BASE,%eax		#mnozenie kolejnych cyfr 
+	mul %edx
+	mov %eax,%edx
+	subb $'0',%cl
+	add %ecx,%edx
+
+	orb $MASK,%cl	#zamiana liter na ma³e
+	cmp $'a',%cl	#sprawdzenie, czy przetwarzana jest litera a-f
+	jb is_digit
+	cmp $'f',%cl
+	ja is_digit
+	subb $'a',%cl	#odjêcie w celu uzyskania cyfry jednosci
+	add $10, %cl 	#dodanie w celu uzyskani cyfry dziesiêtnej
+	jmp hop
+		
+is_digit:
+	subb $'0', %cl #jezeli przetwarzana cyfra, odejmuje kod znaku '0'
+				
+hop:
+	add %ecx,%edx
+			
+	inc %edi
+	jmp L1
+
+	\end{verbatim}
+\subsubsection{Konwersja wyj¶ciowa}	
+		Poni¿ej przedstawiono fragment programu przetwarzaj±cego liczbê przechowywan± w rejestrze \textit{ \%eax } na ci±g znaków. Funkcja jest uniwersalna i mo¿e wypisywaæ znaki w  systemie o dowolnej podstawie. Algorytm dzieli liczbê przez bazê systemu liczbowego, nastêpnie resztê zamienia na znak danej cyfry i wynik zapisuje w buforze wyj¶ciowym.
+	\begin{verbatim}
+	
+	processOutputNumber:		
+	
+		mov $BASE_OUT,%ebx			#podstawa systemu zapisana w programie
+		mov $outputBuforLen-2, %ecx 
+		L3:
+		mov $0, %edx				#wyzerowanie rejestru danej cyfry
+		div %ebx					#dzielenie pozosta³ej liczby
+		addb $'0', %dl				#zamiana cyfry na kod znaku a ASCII(reszta z dzielenia)
+		movb %dl,outputBufor(,%ecx,1)#skopiowanie do bufora
+		dec %ecx					#zmniejszenie wskaznika
+		cmp $0,%eax					#sprawdzenie warunku zakoñczenia algorytmu
+		jne L3
+		ret			
+	
+	\end{verbatim}
+	Powy¿sze programy by³y kompilowane i uruchomiane nastêpuj±cymi poleceniami:
+	\begin{verbatim}
+	as z1.s -o z1.o
+	ld z1.o -o z1
+	./z1
+	\end{verbatim}
+\section{Wnioski}
+	Æwiczenie pozwoli³o na zaznajomienie z instrukcjami i sk³adni± asemblera. Pocz±tkowo problematyczne by³o odwo³ywanie siê do bufora, czêsto spotyka³em siê z b³êdem \textit{Segmentation fault}. 
+	
+\newpage
+\part{}
+%--------------2-------------------------
+\hfill
+\begin{center}
+	\begin{small}
+    \emph{(2)Utrwalenie wiadomo¶ci, u¿ycie stosu oraz innych instrukcji w jêzyku
+    Assembler na platformie Linux}
+  
+	\end{small}
+	
+\end{center}
+
+\vspace{0.2ex}
+\section{Tre¶æ æwiczenia}
+Zakres æwiczenia:
+\begin{itemize}
+\item Tworzenie programów wykorzystuj±cych funkcje. Konstrukcja algorytmów rekurencyjnych. 
+\end{itemize}
+
+\section{Przebieg æwiczenia}
+\label{sec:przebieg-cwiczenia}
+	\subsection{Funkcja obliczeniowa}
+	Pierwszym zadaniem by³o zaimplementowanie prostej funkcji obliczeniowej. W tym celu wykorzystano przygotowane na poprzednim laboratorium fragmenty kodu odpowiedzialne za wczytywanie i wypisywanie liczb. Funkcja \textit{multiplyTwoNumbers} pobiera argumenty ze stosu, mno¿y przez siebie, a wynik równie¿ odk³ada na stosie.
+	\begin{verbatim}
+	SYSCALL32 = 0x80
+	
+	EXIT = 1
+	WRITE = 4
+	READ = 3
+	STDOUT = 1
+	BUFOR_SIZE = 10
+	BASE = 10
+	.data
+	bufor: .space BUFOR_SIZE
+	bufor_len = . - bufor 
+	
+	outputBufor: .ascii "wynik:         \n"
+	outputBuforLen=.-outputBufor
+	.text
+	.global _start
+	
+	_start:
+	
+		call processInputNumber	#wczytaj i przetworz pierwsza liczbe
+		push %rdx				#od³ó¿ wczytan± liczbê na stosie
+		call processInputNumber
+		push %rdx
+		call multiplyTwoNumbers	#wywo³anie funckji mnozacej dwie liczby	
+		pop	%rbx
+		mov %rbx,%rax
+		call processOutputNumber
+		jmp out
+		
+	multiplyTwoNumbers:
+	
+		push %rbp			#
+		mov %rsp,%rbp
+		
+		mov 16(%rbp),%rax	#pobranie pierwszej liczby
+		mov 24(%rbp),%rdx	#pobranie drugiej liczby
+	
+	 	mul %rdx			#pomnozenie - wynik w rax
+		
+		mov %rax,16(%rbp)	#zapisanie wyniku dzialania funkcji
+		mov %rbp,%rsp 		#przywrocenie wskaznika stosu szczytu
+		pop %rbp
+			
+		ret
+	
+	processInputNumber:	#wczyta i przetworzy napis podany na wejsciu na liczbe dziesietna, wyniki w %edx
+	
+		#wczytanie
+		movl $bufor_len, %edx
+		movl $bufor, %ecx
+		movl $STDOUT, %ebx
+		movl $READ, %eax
+		
+		int $SYSCALL32
+	
+		
+		mov $0,%edx		#wynik
+		mov $0,%edi		
+		mov $0,%ecx
+	
+	L1:
+		movb bufor(,%edi,1), %cl
+			
+		cmpb $'\n',%cl
+		jne L2
+	break1:		ret
+		L2:
+		mov $BASE,%eax
+		mul %edx
+		mov %eax,%edx
+		subb $'0',%cl
+		add %ecx,%edx
+	
+		inc %edi
+		jmp L1
+	
+	processOutputNumber:	#przetworzy dane z eax na ciag ³añcuchów ascii i wynik przechowa w buforze
+	
+		mov $BASE,%ebx
+		mov $outputBuforLen-2, %ecx
+		L3:
+		mov $0, %edx
+		div %ebx
+		addb $'0', %dl
+		movb %dl,outputBufor(,%ecx,1)
+		dec %ecx
+		cmp $0,%eax
+		jne L3
+		ret			
+	
+	out:
+	#wyswietlenie
+		movl $outputBuforLen, %edx
+		movl $outputBufor, %ecx
+		movl $STDOUT, %ebx
+		movl $WRITE, %eax
+		
+		int $SYSCALL32
+		
+		movl $EXIT, %eax
+		int $SYSCALL32
+	
+	\end{verbatim}
+	
+Powy¿szy program zosta³ skompilowany i uruchomiony nastêpuj±cymi poleceniami:
+\begin{verbatim}
+as z1.s -o z1.o
+ld z1.o -o z1
+./z1
+\end{verbatim}
+
+\subsection{Obliczanie silni}
+	W celu zachowania czytelno¶ci pominiêto pewne fragmenty, które zosta³y przedstawione wcze¶niej w tym sprawozdaniu. 
+	
+	\begin{verbatim}
+	#...
+	###########################################################
+	.text
+	.global _start
+	_start:
+		call processInputNumber	#wczytaj i przetworz pierwsza liczbe
+		push %rdx       	
+		call factorial
+	 	call processOutputNumber
+		jmp out
+	###########################################################	
+	
+	factorial:
+		push %rbp			
+		mov %rsp, %rbp 		# nowy wskaznik ramki
+		mov 16(%rbp), %rax 	# pobranie parametru z wnetrza stosu
+		cmp $1, %rax		# Sprawdzenie warunku zatrzymania
+		je factorial_end
+	
+		dec %rax			# zmniejsz licznik poziomu iteracji
+		push %rax	
+		call factorial		# wywolaj funkcje rekurencyjnie
+		
+		mov 16(%rbp), %rbx	#pobierz aktualny poziom rekurencji
+		mul %rbx			#oblicz iloczyn poziomu rekurencji
+		
+		
+	factorial_end:
+		mov %rbp, %rsp	#	przywroc wskaznik stosu	
+		pop %rbp 		# 	
+		ret 			# Return
+	
+	
+	\end{verbatim}
+\section{Wnioski}
+	Poprawne operowanie danymi na stosie jest zadaniem nietrywialnym. Pocz±tkowo problem sprawi³o prawid³owe wyrównywanie stosu. Dopiero dog³êbne przeanalizowanie materia³ów dotycz±cych odpowiedniego tworzenia i wykorzystania funckji pozwoli³o na zrealizowanie æwiczenia.
+\newpage
+\part{}
+%--------------3------------------------------
+\hfill
+\begin{center}
+
+  \begin{small}
+    \emph{(3) Zapoznanie z technikami pozwalaj±cymi na u¿ycie w tym samym projekcie ró¿nych jêzyków programowania}
+  \end{small}
+
+\end{center}
+
+\vspace{0.2ex}
+\section{Tre¶æ æwiczenia}
+Zakres æwiczenia:
+\begin{itemize}
+\item U¿ycie jêzyka C w kodzie Assemblera oraz, u¿ycie jêzyka Assemblera w kodzie C. Tworzenie wstawek asemblerowych.
+\end{itemize}
+
+\section{Przebieg æwiczenia}
+\label{sec:przebieg-cwiczenia}
+	\subsection{Wykorzystanie funkcji bibliotecznych jêzyka C w asemblerze}
+	Pierwszym programem zaimplementowanym na laboratorium by³a aplikacja wykorzystuj±ca funkcjê z biblioteki standardowej jêzyka C, mianowicie \textit{printf} i \textit{scanf}. Podczas u¿ywania funkcji \textit{scanf} nale¿y zadeklarowaæ ³añcuch formatuj±cy i przekazaæ go funkcji poprzez stos. Program wczytuje liczbê podana przez u¿ytkownika, nastêpnie wy¶wietla napis z³o¿ony z danych wpisanych w programie, oraz z liczby wprowadzonej przez u¿ytkownikiem
+	\begin{verbatim}
+	.data	
+	.align 32
+	format_string_input: 
+		.string "%d"
+		
+	format_string: 
+		.ascii "Przykladowy string,Czesc  %s!, Jestem %s i mam   %d lata \n\0"
+	
+	text1: 
+		.ascii "Krzysiu\0"   # pierwszy parameter %s (³añcuch znaków zakoñczony \0) 
+	text2:
+		.ascii "Rafal\0"   # drugi parameter %s (³añcuch znaków zakoñczony \0) 
+	number: 
+		.long 0           # trzeci parameter %d (liczba dziesiêtna)
+	
+	.global main
+	.text 
+	 
+	main:
+	
+	push $number
+	pushl $format_string_input       #³añcuch formatuj±cy 
+	call scanf
+	
+	                           # parametery przez stos w odwróconej kolejno¶ci 
+	push number           		# trzeci liczba dziesiêtna (%d)  
+	pushl $text2               # drugi ³añcuch (%s) 
+	pushl $text1               # pierwszy ³añcuch (%s) 
+	pushl $format_string       #³añcuch formatuj±cy 
+	call printf
+		
+	call exit                  # funkcja zakoñczenia programu
+	
+	\end{verbatim}
+	
+	Powy¿szy program zosta³ skompilowany nastêpuj±cym poleceniem:
+	\begin{verbatim}
+	gcc zad1.s -m32
+	\end{verbatim}
+	
+	\subsection{U¿ycie funkcji napisanej w asemblerze w programie w jêzyku C}
+		W asemblerze stworzono funkcjê przedstawion± na poni¿szym listingu. Pobiera ona dwa parametry przekazane poprzez stos, nastêpnie dodaje je i wy¶wietla.
+	\begin{verbatim}
+	SYSCALL32 = 0x80
+	.data
+	format_string: 
+		.ascii "Wynik to:   %d \n\0"
+	.text
+	.global output
+	
+	output:
+		push %ebp
+		mov %esp, %ebp
+		mov 8(%ebp), %eax
+		mov 12(%ebp), %ebx
+	
+		add %eax, %ebx
+			
+		push %ebx
+		push $format_string
+		call printf
+		
+		mov %ebp, %esp	#	przywroc wskaznik stosu	
+		pop %ebp 		# 	
+		
+		ret
+	\end{verbatim}	
+	
+	Funkcja zosta³a wywo³ana w kodzie napisanym w jêzyku C. Kod zosta³ przedstawiony poni¿ej.
+	\begin{verbatim}
+	#include <stdio.h>
+
+	void output(int a, int b);
+
+	int main()
+	{
+	    output(2,3);
+	    return 0;
+	}
+	\end{verbatim}
+	Powy¿szym program zosta³ skompilowany poprzez poni¿szy Makefile:
+	\begin{verbatim}
+	# regu³a linkowania
+	zad2: output.o zad2.o
+	    ld output.o zad2.o -o zad2
+	# regu³a kompilacji
+	output.o: output.s
+	    as output.s -o output.o
+	zad2.o: zad2.c
+	    gcc zad2.c -o zad2.o
+	clean:
+	    rm -f *.o
+	run:
+	    ./zad2
+	\end{verbatim}
+	
+	Program skompilowano i uruchomiono. Zaobserwowano prawid³owe dzia³anie. Pocz±tkowo wyst±pi³y trudno¶ci w prawid³owym stworzeniem funkcji w asemblerze, tak by mog³a odbieraæ parametry poprzez stos. By³o to spowodowane nieprawid³owym wyliczaniem adresu przekazywanych parametrów na stosie. Ponadto nale¿a³o usun±æ etykietê \textit{main} z pliku asemblerowego, prowadzia³o to do niejednoznaczno¶ci.
+	\subsection{U¿ycie funkcji napisanej w C w programie asemblera}
+	
+	Program ma dzia³anie analogiczne do poprzedniego. Tym razem  asembler jest odpowiedzialny za wczytanie dwóch liczb, przekazanie ich jako parametrów oraz wywo³anie funkcji wykonuj±cej dodawanie i wy¶wietlenie wyniku. W tym przypadku etykieta \textit{main} musi znajdowaæ siê z programie asemblerowym. 
+	\begin{verbatim}
+	.data	
+	.align 32
+	format_string_input: 
+		.string "%d %d"
+	number1: 
+	    .long 0            # jeden parameter %d (liczba dziesiêtna)
+	number2: 
+	    .long 0            # drugi parameter %d (liczba dziesiêtna) 
+	
+	.global main
+	.text 
+	main:
+	
+	push $number1				
+	push $number2
+	pushl $format_string_input       #³añcuch formatuj±cy 
+	call scanf
+	                         
+	push number1
+	push number2           	
+	call dodaj
+	
+	call exit                  # funkcja zakoñczenia programu
+	
+	\end{verbatim}
+	
+	Poni¿ej przedstawiono kod programu w jêzyku C, który jest wywo³ywany w programie asemblerowym. Pobiera on dwa argumenty, bêd±ce liczbami ca³kowitymi, nastêpnie dodaje je i wypisuje.
+	\begin{verbatim}
+	#include <stdio.h>
+	void dodaj(int a, int b){
+		printf("%d", a+b);
+	}
+	\end{verbatim}
+	
+	Program zosta³ skompilowany poleceniem:
+	\begin{verbatim}
+	gcc zad2.c add.s -m32
+	\end{verbatim}
+	
+	\subsection{Wstawka asemblerowa}
+	Zaimplementowano wstawkê dodaj±c± dwie liczby. 
+	\begin{verbatim}
+	#include <stdio.h>
+
+	int main()
+	{
+		int a = 3;
+		int b = 5;
+		int result = 0;
+		__asm__(
+			"mov %1, %%ecx;\n"		
+	        "mov %2, %%ebx;\n"
+			"add %%ecx,%%ebx\n"
+			"mov %%ebx,%0\n"	
+	         : "=b" ( result )        /* output */ parametry wyjsciowe
+	         : "c" ( a ), "b" (b)     /* input *///przekazywnie parametrow do wstawki
+	         : "%ecx"					//informacja o niszczonych rejestrach
+		);
+
+		printf("%d",result);
+		return 0;
+	}
+	\end{verbatim}
+	Kod zosta³ skompilowany poni¿szym poleceniem:
+	\begin{verbatim}
+		gcc zad3.c	
+	\end{verbatim}
+	
+\section{Wnioski}
+	Umiejêtno¶æ ³±czenia programów napisanych w C i asemblerze jest praktyczna. Odpowiednie przekazywanie parametrów poprzez stos wymaga dog³êbnego zrozumienia prawid³owej obs³ugi zmiennych odk³adanych na stosie.
+\newpage
+\part{}
+
+
+%-------------4------------------------------
+\hfill
+\begin{center}
+
+  \begin{small}
+    \emph{(4)Zapoznanie z jednostk± zmiennoprzecinkow± procesorów rodziny \emph{x86} }
+   
+  \end{small}
+
+\end{center}
+
+\vspace{0.2ex}
+\section{Tre¶æ æwiczenia}
+Zakres æwiczenia:
+\begin{itemize}
+\item Zapoznanie siê z dzia³aniem jednostki zmiennoprzecinkowej, jej kodami b³êdów oraz
+mo¿liwymi dzia³aniami które mo¿na na niej wykonaæ..
+\end{itemize}
+
+\section{Przebieg æwiczenia}
+\label{sec:przebieg-cwiczenia}
+	
+\section{Wnioski}
+
+\newpage
+\part{}
+
+
 
 \section{Tre¶æ æwiczenia}
 \subsubsection*{Zakres æwiczenia:}

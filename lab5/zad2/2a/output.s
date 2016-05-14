@@ -6,6 +6,7 @@ READ = 3
 STDOUT = 1
 BUFOR_SIZE = 10
 BASE = 10
+
 .data
 bufor: .space BUFOR_SIZE
 bufor_len = . - bufor 

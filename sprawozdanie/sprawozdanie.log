@@ -1,15 +1,15 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015) (preloaded format=pdflatex 2016.4.8)  10 APR 2016 13:30
+This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013/Debian) (format=pdflatex 2016.5.14)  14 MAY 2016 20:56
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
 **sprawozdanie.tex
 (./sprawozdanie.tex
-LaTeX2e <2015/01/01>
-Babel <3.9l> and hyphenation patterns for 79 languages loaded.
-(/usr/local/texlive/2015/texmf-dist/tex/latex/base/article.cls
-Document Class: article 2014/09/29 v1.4h Standard LaTeX document class
-(/usr/local/texlive/2015/texmf-dist/tex/latex/base/size12.clo
-File: size12.clo 2014/09/29 v1.4h Standard LaTeX file (size option)
+LaTeX2e <2011/06/27>
+Babel <3.9h> and hyphenation patterns for 27 languages loaded.
+(/usr/share/texlive/texmf-dist/tex/latex/base/article.cls
+Document Class: article 2007/10/19 v1.4h Standard LaTeX document class
+(/usr/share/texlive/texmf-dist/tex/latex/base/size12.clo
+File: size12.clo 2007/10/19 v1.4h Standard LaTeX file (size option)
 )
 \c@part=\count79
 \c@section=\count80
@@ -23,48 +23,50 @@ File: size12.clo 2014/09/29 v1.4h Standard LaTeX file (size option)
 \belowcaptionskip=\skip42
 \bibindent=\dimen102
 )
-(/usr/local/texlive/2015/texmf-dist/tex/latex/a4wide/a4wide.sty
+(/usr/share/texlive/texmf-dist/tex/latex/a4wide/a4wide.sty
 Package: a4wide 1994/08/30
 
-(/usr/local/texlive/2015/texmf-dist/tex/latex/ntgclass/a4.sty
+(/usr/share/texlive/texmf-dist/tex/latex/ntgclass/a4.sty
 Package: a4 2004/04/15 v1.2g A4 based page layout
 ))
-(/usr/local/texlive/2015/texmf-dist/tex/latex/base/inputenc.sty
-Package: inputenc 2015/03/17 v1.2c Input encoding file
+(/usr/share/texlive/texmf-dist/tex/latex/base/inputenc.sty
+Package: inputenc 2008/03/30 v1.1d Input encoding file
 \inpenc@prehook=\toks14
 \inpenc@posthook=\toks15
 
-(/usr/local/texlive/2015/texmf-dist/tex/latex/base/latin2.def
-File: latin2.def 2015/03/17 v1.2c Input encoding file
+(/usr/share/texlive/texmf-dist/tex/latex/base/latin2.def
+File: latin2.def 2008/03/30 v1.1d Input encoding file
 ))
-(/usr/local/texlive/2015/texmf-dist/tex/latex/base/fontenc.sty
+(/usr/share/texlive/texmf-dist/tex/latex/base/fontenc.sty
 Package: fontenc 2005/09/27 v1.99g Standard LaTeX package
 
-(/usr/local/texlive/2015/texmf-dist/tex/latex/base/ot4enc.def
+(/usr/share/texlive/texmf-dist/tex/latex/base/ot4enc.def
 File: ot4enc.def 2005/09/27 v1.99g Standard LaTeX file
 )
-LaTeX Font Info:    Try loading font information for OT4+cmr on input line 105.
+LaTeX Font Info:    Try loading font information for OT4+cmr on input line 100.
 
 
-(/usr/local/texlive/2015/texmf-dist/tex/latex/polski/ot4cmr.fd
+(/usr/share/texlive/texmf-dist/tex/latex/polski/ot4cmr.fd
 File: ot4cmr.fd 2008/02/24 v1.2.1 Font defs for fonts PL (MW)
 ))
-(/usr/local/texlive/2015/texmf-dist/tex/generic/babel/babel.sty
-Package: babel 2014/09/25 3.9l The Babel package
+(/usr/share/texlive/texmf-dist/tex/generic/babel/babel.sty
+Package: babel 2013/12/03 3.9h The Babel package
 
-(/usr/local/texlive/2015/texmf-dist/tex/generic/babel-english/english.ldf
+(/usr/share/texlive/texmf-dist/tex/generic/babel-english/english.ldf
 Language: english 2012/08/20 v3.3p English support from the babel system
 
-(/usr/local/texlive/2015/texmf-dist/tex/generic/babel/babel.def
-File: babel.def 2014/09/25 3.9l Babel common definitions
+(/usr/share/texlive/texmf-dist/tex/generic/babel/babel.def
+File: babel.def 2013/12/03 3.9h Babel common definitions
 \babel@savecnt=\count87
 \U@D=\dimen103
 )
+\l@british = a dialect from \language\l@english 
+\l@UKenglish = a dialect from \language\l@english 
 \l@canadian = a dialect from \language\l@american 
 \l@australian = a dialect from \language\l@british 
 \l@newzealand = a dialect from \language\l@british 
 )
-(/usr/local/texlive/2015/texmf-dist/tex/generic/babel-polish/polish.ldf
+(/usr/share/texlive/texmf-dist/tex/generic/babel-polish/polish.ldf
 Language: polish 2005/03/31 v1.2l Polish support from the babel system
 Package babel Info: Making " an active character on input line 83.
 \pl@left=\dimen104
@@ -72,31 +74,31 @@ Package babel Info: Making " an active character on input line 83.
 \pl@right=\dimen106
 \pl@temp=\dimen107
 ))
-(/usr/local/texlive/2015/texmf-dist/tex/latex/graphics/graphicx.sty
-Package: graphicx 2014/10/28 v1.0g Enhanced LaTeX Graphics (DPC,SPQR)
+(/usr/share/texlive/texmf-dist/tex/latex/graphics/graphicx.sty
+Package: graphicx 1999/02/16 v1.0f Enhanced LaTeX Graphics (DPC,SPQR)
 
-(/usr/local/texlive/2015/texmf-dist/tex/latex/graphics/keyval.sty
-Package: keyval 2014/10/28 v1.15 key=value parser (DPC)
+(/usr/share/texlive/texmf-dist/tex/latex/graphics/keyval.sty
+Package: keyval 1999/03/16 v1.13 key=value parser (DPC)
 \KV@toks@=\toks16
 )
-(/usr/local/texlive/2015/texmf-dist/tex/latex/graphics/graphics.sty
-Package: graphics 2014/10/28 v1.0p Standard LaTeX Graphics (DPC,SPQR)
+(/usr/share/texlive/texmf-dist/tex/latex/graphics/graphics.sty
+Package: graphics 2009/02/05 v1.0o Standard LaTeX Graphics (DPC,SPQR)
 
-(/usr/local/texlive/2015/texmf-dist/tex/latex/graphics/trig.sty
+(/usr/share/texlive/texmf-dist/tex/latex/graphics/trig.sty
 Package: trig 1999/03/16 v1.09 sin cos tan (DPC)
 )
-(/usr/local/texlive/2015/texmf-dist/tex/latex/latexconfig/graphics.cfg
+(/usr/share/texlive/texmf-dist/tex/latex/latexconfig/graphics.cfg
 File: graphics.cfg 2010/04/23 v1.9 graphics configuration of TeX Live
 )
-Package graphics Info: Driver file: pdftex.def on input line 94.
+Package graphics Info: Driver file: pdftex.def on input line 91.
 
-(/usr/local/texlive/2015/texmf-dist/tex/latex/pdftex-def/pdftex.def
+(/usr/share/texlive/texmf-dist/tex/latex/pdftex-def/pdftex.def
 File: pdftex.def 2011/05/27 v0.06d Graphics/color for pdfTeX
 
-(/usr/local/texlive/2015/texmf-dist/tex/generic/oberdiek/infwarerr.sty
+(/usr/share/texlive/texmf-dist/tex/generic/oberdiek/infwarerr.sty
 Package: infwarerr 2010/04/08 v1.3 Providing info/warning/error messages (HO)
 )
-(/usr/local/texlive/2015/texmf-dist/tex/generic/oberdiek/ltxcmds.sty
+(/usr/share/texlive/texmf-dist/tex/generic/oberdiek/ltxcmds.sty
 Package: ltxcmds 2011/11/09 v1.22 LaTeX kernel commands for general use (HO)
 )
 \Gread@gobject=\count88
@@ -104,21 +106,21 @@ Package: ltxcmds 2011/11/09 v1.22 LaTeX kernel commands for general use (HO)
 \Gin@req@height=\dimen108
 \Gin@req@width=\dimen109
 )
-(/usr/local/texlive/2015/texmf-dist/tex/latex/tools/indentfirst.sty
+(/usr/share/texlive/texmf-dist/tex/latex/tools/indentfirst.sty
 Package: indentfirst 1995/11/23 v1.03 Indent first paragraph (DPC)
 )
-(/usr/local/texlive/2015/texmf-dist/tex/latex/geometry/geometry.sty
+(/usr/share/texlive/texmf-dist/tex/latex/geometry/geometry.sty
 Package: geometry 2010/09/12 v5.6 Page Geometry
 
-(/usr/local/texlive/2015/texmf-dist/tex/generic/oberdiek/ifpdf.sty
+(/usr/share/texlive/texmf-dist/tex/generic/oberdiek/ifpdf.sty
 Package: ifpdf 2011/01/30 v2.3 Provides the ifpdf switch (HO)
 Package ifpdf Info: pdfTeX in PDF mode is detected.
 )
-(/usr/local/texlive/2015/texmf-dist/tex/generic/oberdiek/ifvtex.sty
+(/usr/share/texlive/texmf-dist/tex/generic/oberdiek/ifvtex.sty
 Package: ifvtex 2010/03/01 v1.5 Detect VTeX and its facilities (HO)
 Package ifvtex Info: VTeX not detected.
 )
-(/usr/local/texlive/2015/texmf-dist/tex/generic/ifxetex/ifxetex.sty
+(/usr/share/texlive/texmf-dist/tex/generic/ifxetex/ifxetex.sty
 Package: ifxetex 2010/09/12 v0.6 Provides ifxetex conditional
 )
 \Gm@cnth=\count89
@@ -134,25 +136,37 @@ Package: ifxetex 2010/09/12 v0.6 Provides ifxetex conditional
 \Gm@layoutvoffset=\dimen117
 \Gm@dimlist=\toks17
 )
-(./sprawozdanie.aux)
+(./sprawozdanie.aux
+
+LaTeX Warning: Label `sec:przebieg-cwiczenia' multiply defined.
+
+
+LaTeX Warning: Label `sec:przebieg-cwiczenia' multiply defined.
+
+
+LaTeX Warning: Label `sec:przebieg-cwiczenia' multiply defined.
+
+
+LaTeX Warning: Label `sec:przebieg-cwiczenia' multiply defined.
+
+)
 \openout1 = `sprawozdanie.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 14.
-LaTeX Font Info:    ... okay on input line 14.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 14.
-LaTeX Font Info:    ... okay on input line 14.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 14.
-LaTeX Font Info:    ... okay on input line 14.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 14.
-LaTeX Font Info:    ... okay on input line 14.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 14.
-LaTeX Font Info:    ... okay on input line 14.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 14.
-LaTeX Font Info:    ... okay on input line 14.
-LaTeX Font Info:    Checking defaults for OT4/cmr/m/n on input line 14.
-LaTeX Font Info:    ... okay on input line 14.
-
-(/usr/local/texlive/2015/texmf-dist/tex/context/base/supp-pdf.mkii
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 38.
+LaTeX Font Info:    ... okay on input line 38.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 38.
+LaTeX Font Info:    ... okay on input line 38.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 38.
+LaTeX Font Info:    ... okay on input line 38.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 38.
+LaTeX Font Info:    ... okay on input line 38.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 38.
+LaTeX Font Info:    ... okay on input line 38.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 38.
+LaTeX Font Info:    ... okay on input line 38.
+LaTeX Font Info:    Checking defaults for OT4/cmr/m/n on input line 38.
+LaTeX Font Info:    ... okay on input line 38.
+ (/usr/share/texlive/texmf-dist/tex/context/base/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
 \scratchcounter=\count92
 \scratchdimen=\dimen118
@@ -165,11 +179,11 @@ LaTeX Font Info:    ... okay on input line 14.
 \MPnumerator=\count96
 \makeMPintoPDFobject=\count97
 \everyMPtoPDFconversion=\toks19
-) (/usr/local/texlive/2015/texmf-dist/tex/generic/oberdiek/pdftexcmds.sty
+) (/usr/share/texlive/texmf-dist/tex/generic/oberdiek/pdftexcmds.sty
 Package: pdftexcmds 2011/11/29 v0.20 Utility functions of pdfTeX for LuaTeX (HO
 )
 
-(/usr/local/texlive/2015/texmf-dist/tex/generic/oberdiek/ifluatex.sty
+(/usr/share/texlive/texmf-dist/tex/generic/oberdiek/ifluatex.sty
 Package: ifluatex 2010/03/01 v1.3 Provides the ifluatex switch (HO)
 Package ifluatex Info: LuaTeX not detected.
 )
@@ -178,22 +192,22 @@ Package pdftexcmds Info: \pdf@primitive is available.
 Package pdftexcmds Info: \pdf@ifprimitive is available.
 Package pdftexcmds Info: \pdfdraftmode found.
 )
-(/usr/local/texlive/2015/texmf-dist/tex/latex/oberdiek/epstopdf-base.sty
+(/usr/share/texlive/texmf-dist/tex/latex/oberdiek/epstopdf-base.sty
 Package: epstopdf-base 2010/02/09 v2.5 Base part for package epstopdf
 
-(/usr/local/texlive/2015/texmf-dist/tex/latex/oberdiek/grfext.sty
+(/usr/share/texlive/texmf-dist/tex/latex/oberdiek/grfext.sty
 Package: grfext 2010/08/19 v1.1 Manage graphics extensions (HO)
 
-(/usr/local/texlive/2015/texmf-dist/tex/generic/oberdiek/kvdefinekeys.sty
+(/usr/share/texlive/texmf-dist/tex/generic/oberdiek/kvdefinekeys.sty
 Package: kvdefinekeys 2011/04/07 v1.3 Define keys (HO)
 ))
-(/usr/local/texlive/2015/texmf-dist/tex/latex/oberdiek/kvoptions.sty
+(/usr/share/texlive/texmf-dist/tex/latex/oberdiek/kvoptions.sty
 Package: kvoptions 2011/06/30 v3.11 Key value format for package options (HO)
 
-(/usr/local/texlive/2015/texmf-dist/tex/generic/oberdiek/kvsetkeys.sty
+(/usr/share/texlive/texmf-dist/tex/generic/oberdiek/kvsetkeys.sty
 Package: kvsetkeys 2012/04/25 v1.16 Key value parser (HO)
 
-(/usr/local/texlive/2015/texmf-dist/tex/generic/oberdiek/etexcmds.sty
+(/usr/share/texlive/texmf-dist/tex/generic/oberdiek/etexcmds.sty
 Package: etexcmds 2011/02/16 v1.5 Avoid name clashes with e-TeX commands (HO)
 Package etexcmds Info: Could not find \expanded.
 (etexcmds)             That can mean that you are not using pdfTeX 1.50 or
@@ -205,7 +219,7 @@ Package grfext Info: Graphics extension search list:
 G,.JBIG2,.JB2,.eps]
 (grfext)             \AppendGraphicsExtensions on input line 452.
 
-(/usr/local/texlive/2015/texmf-dist/tex/latex/latexconfig/epstopdf-sys.cfg
+(/usr/share/texlive/texmf-dist/tex/latex/latexconfig/epstopdf-sys.cfg
 File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Liv
 e
 ))
@@ -245,103 +259,138 @@ e
 * (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 17--19
+Underfull \hbox (badness 10000) in paragraph at lines 41--43
 
  []
 
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <12> on input line 24.
+(Font)              <12> on input line 48.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <8> on input line 24.
+(Font)              <8> on input line 48.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <6> on input line 24.
-LaTeX Font Info:    Try loading font information for OMS+cmr on input line 48.
-(/usr/local/texlive/2015/texmf-dist/tex/latex/base/omscmr.fd
-File: omscmr.fd 2014/09/29 v2.5h Standard LaTeX font definitions
+(Font)              <6> on input line 48.
+LaTeX Font Info:    Try loading font information for OMS+cmr on input line 70.
+(/usr/share/texlive/texmf-dist/tex/latex/base/omscmr.fd
+File: omscmr.fd 1999/05/25 v2.5h Standard LaTeX font definitions
 )
 LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <12> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 48.
-LaTeX Font Info:    Try loading font information for OT4+cmtt on input line 57.
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 70.
+LaTeX Font Info:    Try loading font information for OT4+cmtt on input line 79.
 
 
-(/usr/local/texlive/2015/texmf-dist/tex/latex/polski/ot4cmtt.fd
+(/usr/share/texlive/texmf-dist/tex/latex/polski/ot4cmtt.fd
 File: ot4cmtt.fd 2008/02/24 v1.2.1 Font defs for fonts PL (MW)
 ) [1
 
-{/usr/local/texlive/2015/texmf-var/fonts/map/pdftex/updmap/pdftex.map}]
+{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}] [2] [3] [4] [5] [6] [7]
+Overfull \hbox (176.48256pt too wide) in paragraph at lines 438--438
+[]\OT4/cmtt/m/n/12 processInputNumber: #wczyta i przetworzy napis podany na wej
+sciu na liczbe dziesietna, wyniki w %edx[] 
+ []
+
+[8]
+Overfull \hbox (145.60754pt too wide) in paragraph at lines 438--438
+[]\OT4/cmtt/m/n/12 processOutputNumber: #przetworzy dane z eax na ciag ªa«cuchó
+w ascii i wynik przechowa w buforze[] 
+ []
+
+[9] [10]
+Overfull \hbox (22.10748pt too wide) in paragraph at lines 544--544
+[]\OT4/cmtt/m/n/12 .ascii "Krzysiu\0"   # pierwszy parameter %s (ªa«cuch znaków
+ zako«czony \0)[] 
+ []
+
+
+Overfull \hbox (15.93248pt too wide) in paragraph at lines 544--544
+[]                           \OT4/cmtt/m/n/12 # parametery przez stos w odwróco
+nej kolejno±ci[] 
+ []
+
+[11] [12] [13]
+Overfull \hbox (59.1575pt too wide) in paragraph at lines 674--674
+[]         \OT4/cmtt/m/n/12 : "c" ( a ), "b" (b)     /* input *///przekazywnie 
+parametrow do wstawki[] 
+ []
+
+[14] [15] [16] [17]
 
 LaTeX Font Warning: Font shape `OT4/cmtt/bx/n' in size <14.4> not available
-(Font)              Font shape `OT4/cmtt/m/n' tried instead on input line 109.
+(Font)              Font shape `OT4/cmtt/m/n' tried instead on input line 779.
 
 
-Overfull \hbox (17.93477pt too wide) in paragraph at lines 148--148
+Overfull \hbox (17.93477pt too wide) in paragraph at lines 818--818
 []\OT4/cmtt/m/n/10.95 GDB is free software, covered by the GNU General Public L
 icense, and you are[] 
  []
 
 
-Overfull \hbox (23.68346pt too wide) in paragraph at lines 148--148
+Overfull \hbox (23.68346pt too wide) in paragraph at lines 818--818
 []\OT4/cmtt/m/n/10.95 welcome to change it and/or distribute copies of it under
  certain conditions.[] 
  []
 
 
-Overfull \hbox (12.18608pt too wide) in paragraph at lines 148--148
+Overfull \hbox (12.18608pt too wide) in paragraph at lines 818--818
 []\OT4/cmtt/m/n/10.95 There is absolutely no warranty for GDB.  Type "show warr
 anty" for details.[] 
  []
 
+[18]
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <7> on input line 188.
+(Font)              <7> on input line 858.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <5> on input line 188.
-[2] [3]
-Overfull \hbox (7.95393pt too wide) in paragraph at lines 250--252
+(Font)              <5> on input line 858.
+ [19]
+Overfull \hbox (7.95393pt too wide) in paragraph at lines 920--922
 []\OT4/cmtt/m/n/12 inf[o] \OT4/cmr/m/n/12 -- wy-±wie-tle-nie in-for-ma-cji o wy
 -ko-ny-wa-nym pro-gra-mie (np. \OT4/cmtt/m/n/12 inf[o] reg[is-
  []
 
-[4] [5]
+[20] [21]
 
-LaTeX Warning: Reference `fig:emacs-gud1' on page 6 undefined on input line 368
-.
+LaTeX Warning: Reference `fig:emacs-gud1' on page 22 undefined on input line 10
+38.
 
-[6] [7]
+[22] [23]
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <10.95> on input line 411.
+(Font)              <10.95> on input line 1081.
 LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <10.95> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 433.
- [8] [9] (./sprawozdanie.aux)
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 1103.
+
+ [24] [25] (./sprawozdanie.aux)
 
 LaTeX Warning: There were undefined references.
 
+
+LaTeX Warning: There were multiply-defined labels.
+
  ) 
 Here is how much of TeX's memory you used:
- 2908 strings out of 493089
- 40320 string characters out of 6134843
- 114886 words of memory out of 5000000
- 6335 multiletter control sequences out of 15000+600000
- 15042 words of font info for 43 fonts, out of 8000000 for 9000
- 1141 hyphenation exceptions out of 8191
- 38i,8n,31p,248b,318s stack positions out of 5000i,500n,10000p,200000b,80000s
-{/usr/local/texlive/2015/texmf-dist/fonts/enc/dvips/pl/plrm.enc}{/usr/local/t
-exlive/2015/texmf-dist/fonts/enc/dvips/pl/pltt.enc}{/usr/local/texlive/2015/tex
-mf-dist/fonts/enc/dvips/pl/plit.enc}</usr/local/texlive/2015/texmf-dist/fonts/t
-ype1/public/amsfonts/cm/cmmi10.pfb></usr/local/texlive/2015/texmf-dist/fonts/ty
-pe1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/2015/texmf-dist/fonts/typ
-e1/public/pl/plbx10.pfb></usr/local/texlive/2015/texmf-dist/fonts/type1/public/
-pl/plbx12.pfb></usr/local/texlive/2015/texmf-dist/fonts/type1/public/pl/plr10.p
-fb></usr/local/texlive/2015/texmf-dist/fonts/type1/public/pl/plr12.pfb></usr/lo
-cal/texlive/2015/texmf-dist/fonts/type1/public/pl/plr7.pfb></usr/local/texlive/
-2015/texmf-dist/fonts/type1/public/pl/plr8.pfb></usr/local/texlive/2015/texmf-d
-ist/fonts/type1/public/pl/plti10.pfb></usr/local/texlive/2015/texmf-dist/fonts/
-type1/public/pl/plti12.pfb></usr/local/texlive/2015/texmf-dist/fonts/type1/publ
-ic/pl/pltt10.pfb></usr/local/texlive/2015/texmf-dist/fonts/type1/public/pl/pltt
-12.pfb>
-Output written on sprawozdanie.pdf (9 pages, 131960 bytes).
+ 2892 strings out of 494435
+ 39673 string characters out of 6165694
+ 110956 words of memory out of 5000000
+ 6079 multiletter control sequences out of 15000+600000
+ 16042 words of font info for 45 fonts, out of 8000000 for 9000
+ 370 hyphenation exceptions out of 8191
+ 38i,8n,31p,568b,320s stack positions out of 5000i,500n,10000p,200000b,80000s
+{/usr/share/texlive/texmf-dist/fonts/enc/dvips/pl/plrm.enc}{/usr/share/texliv
+e/texmf-dist/fonts/enc/dvips/pl/pltt.enc}{/usr/share/texlive/texmf-dist/fonts/e
+nc/dvips/pl/plit.enc}</usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts
+/cm/cmmi10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cm
+r10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb>
+</usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/
+share/texlive/texmf-dist/fonts/type1/public/pl/plbx10.pfb></usr/share/texlive/t
+exmf-dist/fonts/type1/public/pl/plbx12.pfb></usr/share/texlive/texmf-dist/fonts
+/type1/public/pl/plr10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/pl
+/plr12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/pl/plr7.pfb></usr/
+share/texlive/texmf-dist/fonts/type1/public/pl/plr8.pfb></usr/share/texlive/tex
+mf-dist/fonts/type1/public/pl/plti10.pfb></usr/share/texlive/texmf-dist/fonts/t
+ype1/public/pl/plti12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/pl/
+pltt10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/pl/pltt12.pfb>
+Output written on sprawozdanie.pdf (25 pages, 168688 bytes).
 PDF statistics:
- 85 PDF objects out of 1000 (max. 8388607)
- 61 compressed objects within 1 object stream
+ 145 PDF objects out of 1000 (max. 8388607)
+ 102 compressed objects within 2 object streams
  0 named destinations out of 1000 (max. 500000)
  1 words of extra memory for PDF output out of 10000 (max. 10000000)
 

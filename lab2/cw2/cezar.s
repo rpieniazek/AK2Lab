@@ -8,8 +8,8 @@ MASK = 0x20 #maska zamieniajaca kazda litere na wielka 0010 0000
 BUFOR_SIZE = 254
 
 .data
-komunikat: .space BUFOR_SIZE
-komunikat_len = . - komunikat 
+bufor: .space BUFOR_SIZE
+bufor_len = . - bufor 
 
 .text
 .global _start
@@ -19,8 +19,8 @@ komunikat_len = . - komunikat
 _start:
 
 	#wczytanie
-	movl $komunikat_len, %edx
-	movl $komunikat, %ecx
+	movl $bufor_len, %edx
+	movl $bufor, %ecx
 	movl $STDOUT, %ebx
 	movl $READ, %eax
 	
@@ -29,29 +29,28 @@ _start:
 	
 	xorl %edi, %edi 				#inicjalizacja wskaznika
 	
-	movb komunikat(,%edi,1), %bl 			#wczytanie parametru szyfru
+	movb bufor(,%edi,1), %bl 		#wczytanie parametru szyfru
 	incl %edi
 	
 	or $0x40, %bl 					#duze kody mają kody 0x41,0x42....
 	cmpb $'Z',%bl					#jezeli wielka to szyfrujemy
 	jbe prepare_encrypt
-prepare_decrypt:	
+prepare_decrypt:					#w przeciwnym przypadku deszyfrujemy
 	subb $'a', %bl	
 	negb %bl
 	jmp cipher
 	
 	
-	
 prepare_encrypt:	
 	subb $'A', %bl
-	#movb $' ',komunikat(,$0,1) 	#ukrycie klucza
+	#movb $' ',bufor(,$0,1) 	#ukrycie klucza
 
 	
-cipher:
+cipher:							
 			
-	movb komunikat(,%edi,1), %al
+	movb bufor(,%edi,1), %al	#pobranie znaku z bufora
 	
-	cmpb $'\n',%al
+	cmpb $'\n',%al		#sprawdzenie, czy nie nastąpił znak końca nowej linii
 	je out
 
 	orb $MASK, %al 		#zamiana wszystkich liter na male
@@ -70,16 +69,13 @@ cipher:
 	addb $'a', %al
 	
 	hop:
-	movb %al,komunikat(,%edi,1)
-	incl %edi
+	movb %al,bufor(,%edi,1)	#wpisanie przetworzonego napisu do bufora
+	incl %edi				#zwiększenie wskaźnika
 	jmp cipher
 	
-
-
 	out:
-	#wyswietlenie
-	movl $komunikat_len, %edx
-	movl $komunikat, %ecx
+	movl $bufor_len, %edx	#wyswietlenie
+	movl $bufor, %ecx
 	movl $STDOUT, %ebx
 	movl $WRITE, %eax
 	

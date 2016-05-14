@@ -8,30 +8,26 @@ MASK = 0x20 		#maska zamieniajaca kazda litere na wielka 0010 0000
 BUFOR_SIZE = 254
 
 .data
-komunikat: .space BUFOR_SIZE
-komunikat_len = . - komunikat 
+bufor: .space BUFOR_SIZE	#
+bufor_len = . - bufor 
 
 .text
 .global _start
 
 _start:
 
-	#wczytanie
-	movl $komunikat_len, %edx
-	movl $komunikat, %ecx
+	movl $bufor_len, %edx	#wczytanie
+	movl $bufor, %ecx
 	movl $STDOUT, %ebx
 	movl $READ, %eax
 	
-	int $SYSCALL32
-	
-						#przetworzenie
-	
-	
+	int $SYSCALL32	
+	#początek przetwarzenia						
 	xorl %edi, %edi 	#inicjalizacja wskaznika
 	
 loop:
 		
-	movb komunikat(,%edi,1), %al #skopiowanie  znaku z bufora do rejestru
+	movb bufor(,%edi,1), %al #skopiowanie  znaku z bufora do rejestru
 	
 	cmpb $'\n',%al 		#sprawdzamy, czy przetworzono juz cala linie
 	je print				
@@ -43,20 +39,15 @@ loop:
 	cmpb $'z', %al
 	jg break
 
-
-	
-	movb %al,komunikat(,%edi,1)
+	movb %al,bufor(,%edi,1)#skopiowanie znaku do bufora
 
 	break:
-	incl %edi
+	incl %edi		#inkrementacja wskaznika
 	jmp loop
-	
 
-
-	print:
-	#wyswietlenie
-	movl $komunikat_len, %edx
-	movl $komunikat, %ecx
+	print:				#wyswietlenie
+	movl $bufor_len, %edx
+	movl $bufor, %ecx
 	movl $STDOUT, %ebx
 	movl $WRITE, %eax
 	
