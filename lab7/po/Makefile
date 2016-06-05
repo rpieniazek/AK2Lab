@@ -6,4 +6,4 @@ negatyw.o: negatyw.s
 	gcc -m32 -c -o negatyw.o negatyw.s
 
 run:
-	./main lena.bmp wynikbezMxx2.bmp
+	./main 2.bmp wynik.bmp
