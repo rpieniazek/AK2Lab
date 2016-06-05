@@ -12,27 +12,34 @@
 \renewcommand{\baselinestretch}{1}
 
 \makeatletter
-\@addtoreset{section}{part}
-\def\@part[#1]#2{%
-    \ifnum \c@secnumdepth >\m@ne
-      \refstepcounter{part}%
-      \addcontentsline{toc}{part}{\thepart\hspace{1em}#1}%
-    \else
-      \addcontentsline{toc}{part}{#1}%
-    \fi
-    {\parindent \z@ \raggedright
-     \interlinepenalty \@M
-     \normalfont\centering
+\def\@seccntformat#1{%
+  \expandafter\ifx\csname c@#1\endcsname\c@section\else
+  \csname the#1\endcsname\quad
+  \fi}
+\makeatother
+
+%\makeatletter
+%\@addtoreset{section}{part}
+%\def\@part[#1]#2{%
+  %  \ifnum \c@secnumdepth >\m@ne
+  %    \refstepcounter{part}%
+  %    \addcontentsline{toc}{part}{\thepart\hspace{1em}#1}%
+  %  \else
+  %    \addcontentsline{toc}{part}{#1}%
+   % \fi
+  %  {\parindent \z@ \raggedright
+ %    \interlinepenalty \@M
+ %    \normalfont\centering
      %\ifnum \c@secnumdepth >\m@ne
       % \LARGE\bfseries \partname\nobreakspace\thepart
        %\par\nobreak
      %\fi
-     \huge \bfseries #2%
-     \markboth{}{}\par}%
-    \nobreak
-    \vskip 3ex
-    \@afterheading}
-\renewcommand\partname{Topic}
+ %    \huge \bfseries #2%
+ %    \markboth{}{}\par}%
+%   \nobreak
+%    \vskip 3ex
+%    \@afterheading}
+%\renewcommand\partname{Topic}
 \makeatother
 
 \begin{document}
@@ -64,16 +71,18 @@ prowadz±cy: prof. Janusz Biernat
 \end{center}
 
 \vspace{0.2ex}
-\section{Tre¶æ æwiczenia}
+
+\section{}
+\subsection{Tre¶æ æwiczenia}
 Zakres æwiczenia:
 \begin{itemize}
 \item Nabycie umiejêtno¶ci zwi±zanych z tworzeniem prostych pêtli oraz instrukcji warunkowych z
 u¿yciem assemblera.
 \end{itemize}
 
-\section{Przebieg æwiczenia}
+\subsection{Przebieg æwiczenia}
 \label{sec:przebieg-cwiczenia}
-\subsection{Zamiana wielko¶ci liter}
+\subsubsection{Zamiana wielko¶ci liter}
 
 Na pocz±tku laboratoriów zosta³ przygotowany prosty program przetwarzaj±cy wprowadzone dane. Program wczytywa³ dane wprowadzane z klawiatury, zamienia³ wszystkie litery na ma³e. Program by³ zabezpieczony przed wprowadzaniem niepoprawnych danych. Ci±g znaków z bufora by³ przetwarzany do momentu napotkania znaku nowej linii.
 \begin{verbatim}
@@ -140,7 +149,7 @@ Program zosta³ skompilowany i uruchomiony przy pomocy poni¿szego polecenia. Zaob
 \begin{verbatim}
 	as cw1.s
 \end{verbatim}
-\subsection{Szyfr Cezara}
+\subsubsection{Szyfr Cezara}
 Kolejnym zadaniem by³o zaimplementowanie algorytmu szyfrowania szyfrem Cezara. Kluczem by³ pierwszy znak wczytany z klawiatury. Je¿eli wczytany klucz by³ wielk± liter±, algorytm szyfrowa³ napis, w przeciwnym przypadku nastêpowa³o deszyfrowanie.\\
 \begin{verbatim}
 SYSCALL32 = 0x80
@@ -230,8 +239,8 @@ as cezar.s -o cezar.o
 ld cezar.o -o cezar
 ./cezar
 \end{verbatim}
-\subsection{Konwersje liczbowe}
-	\subsubsection{Konwersja wej¶ciowa}
+\subsubsection{Konwersje liczbowe danych wej¶ciowych}
+	
 	Kolejnym etapem by³o przygotowanie programów wczytuj±cych napisy w postaci cyfr i zamieniaj±cych je na liczby. Przygotowano uniwersaln± funkcjê wczytuj±c± ci±g cyfr do bufora,zamieniaj±c± j± na liczbê o podstawie danej sta³± zdefiniowan± w programie. W celu zachowania czytelno¶ci pominiêto powtarzaj±ce siê elementy programu. Funkcja jest w stanie dekodowaæ liczby zapisane w systemie o podstawie maksymalnie równej 16. Algorytm jest oparty na schemacie Hornera.
 	\begin{verbatim}
 	...
@@ -280,7 +289,7 @@ hop:
 	jmp L1
 
 	\end{verbatim}
-\subsubsection{Konwersja wyj¶ciowa}	
+\subsubsection{Konwersja liczbowa danych wyj¶ciowych}	
 		Poni¿ej przedstawiono fragment programu przetwarzaj±cego liczbê przechowywan± w rejestrze \textit{ \%eax } na ci±g znaków. Funkcja jest uniwersalna i mo¿e wypisywaæ znaki w  systemie o dowolnej podstawie. Algorytm dzieli liczbê przez bazê systemu liczbowego, nastêpnie resztê zamienia na znak danej cyfry i wynik zapisuje w buforze wyj¶ciowym.
 	\begin{verbatim}
 	
@@ -305,11 +314,11 @@ hop:
 	ld z1.o -o z1
 	./z1
 	\end{verbatim}
-\section{Wnioski}
+\subsection{Wnioski}
 	Æwiczenie pozwoli³o na zaznajomienie z instrukcjami i sk³adni± asemblera. Pocz±tkowo problematyczne by³o odwo³ywanie siê do bufora, czêsto spotyka³em siê z b³êdem \textit{Segmentation fault}. 
 	
 \newpage
-\part{}
+%\part{}
 %--------------2-------------------------
 \hfill
 \begin{center}
@@ -320,17 +329,17 @@ hop:
 	\end{small}
 	
 \end{center}
-
+\section{}
 \vspace{0.2ex}
-\section{Tre¶æ æwiczenia}
+\subsection{Tre¶æ æwiczenia}
 Zakres æwiczenia:
 \begin{itemize}
 \item Tworzenie programów wykorzystuj±cych funkcje. Konstrukcja algorytmów rekurencyjnych. 
 \end{itemize}
 
-\section{Przebieg æwiczenia}
+\subsection{Przebieg æwiczenia}
 \label{sec:przebieg-cwiczenia}
-	\subsection{Funkcja obliczeniowa}
+	\subsubsection{Funkcja obliczeniowa}
 	Pierwszym zadaniem by³o zaimplementowanie prostej funkcji obliczeniowej. W tym celu wykorzystano przygotowane na poprzednim laboratorium fragmenty kodu odpowiedzialne za wczytywanie i wypisywanie liczb. Funkcja \textit{multiplyTwoNumbers} pobiera argumenty ze stosu, mno¿y przez siebie, a wynik równie¿ odk³ada na stosie.
 	\begin{verbatim}
 	SYSCALL32 = 0x80
@@ -444,7 +453,7 @@ ld z1.o -o z1
 ./z1
 \end{verbatim}
 
-\subsection{Obliczanie silni}
+\subsubsection{Obliczanie silni}
 	W celu zachowania czytelno¶ci pominiêto pewne fragmenty, które zosta³y przedstawione wcze¶niej w tym sprawozdaniu. 
 	
 	\begin{verbatim}
@@ -481,10 +490,10 @@ ld z1.o -o z1
 	
 	
 	\end{verbatim}
-\section{Wnioski}
+\subsection{Wnioski}
 	Poprawne operowanie danymi na stosie jest zadaniem nietrywialnym. Pocz±tkowo problem sprawi³o prawid³owe wyrównywanie stosu. Dopiero dog³êbne przeanalizowanie materia³ów dotycz±cych odpowiedniego tworzenia i wykorzystania funkcji pozwoli³o na zrealizowanie æwiczenia.
 \newpage
-\part{}
+%\part{}
 %--------------3------------------------------
 \hfill
 \begin{center}
@@ -496,15 +505,16 @@ ld z1.o -o z1
 \end{center}
 
 \vspace{0.2ex}
-\section{Tre¶æ æwiczenia}
+\section{}
+\subsection{Tre¶æ æwiczenia}
 Zakres æwiczenia:
 \begin{itemize}
 \item U¿ycie jêzyka C w kodzie Assemblera oraz, u¿ycie jêzyka Assemblera w kodzie C. Tworzenie wstawek asemblerowych.
 \end{itemize}
 
-\section{Przebieg æwiczenia}
+\subsection{Przebieg æwiczenia}
 \label{sec:przebieg-cwiczenia}
-	\subsection{Wykorzystanie funkcji bibliotecznych jêzyka C w asemblerze}
+	\subsubsection{Wykorzystanie funkcji bibliotecznych jêzyka C w asemblerze}
 	Pierwszym programem zaimplementowanym na laboratorium by³a aplikacja wykorzystuj±ca funkcjê z biblioteki standardowej jêzyka C, mianowicie \textit{printf} i \textit{scanf}. Podczas u¿ywania funkcji \textit{scanf} nale¿y zadeklarowaæ ³añcuch formatuj±cy i przekazaæ go funkcji poprzez stos. Program wczytuje liczbê podana przez u¿ytkownika, nastêpnie wy¶wietla napis z³o¿ony z danych wpisanych w programie, oraz z liczby wprowadzonej przez u¿ytkownikiem
 	\begin{verbatim}
 	.data	
@@ -547,7 +557,7 @@ Zakres æwiczenia:
 	gcc zad1.s -m32
 	\end{verbatim}
 	
-	\subsection{U¿ycie funkcji napisanej w asemblerze w programie w jêzyku C}
+	\subsubsection{U¿ycie funkcji napisanej w asemblerze w programie w jêzyku C}
 		W asemblerze stworzono funkcjê przedstawion± na poni¿szym listingu. Pobiera ona dwa parametry przekazane poprzez stos, nastêpnie dodaje je i wy¶wietla.
 	\begin{verbatim}
 	SYSCALL32 = 0x80
@@ -604,7 +614,7 @@ Zakres æwiczenia:
 	\end{verbatim}
 	
 	Program skompilowano i uruchomiono. Zaobserwowano prawid³owe dzia³anie. Pocz±tkowo wyst±pi³y trudno¶ci w prawid³owym stworzeniem funkcji w asemblerze, tak by mog³a odbieraæ parametry poprzez stos. By³o to spowodowane nieprawid³owym wyliczaniem adresu przekazywanych parametrów na stosie. Ponadto nale¿a³o usun±æ etykietê \textit{main} z pliku asemblerowego, prowadzi³o to do niejednoznaczno¶ci podczas kompilacji.
-	\subsection{U¿ycie funkcji napisanej w C w programie asemblera}
+	\subsubsection{U¿ycie funkcji napisanej w C w programie asemblera}
 	
 	Program ma dzia³anie analogiczne do poprzedniego. Tym razem  asembler jest odpowiedzialny za wczytanie dwóch liczb, przekazanie ich jako parametrów oraz wywo³anie funkcji wykonuj±cej dodawanie i wy¶wietlenie wyniku. W tym przypadku etykieta \textit{main} musi znajdowaæ siê z programie asemblerowym. 
 	\begin{verbatim}
@@ -647,7 +657,7 @@ Zakres æwiczenia:
 	gcc zad2.c add.s -m32
 	\end{verbatim}
 	
-	\subsection{Wstawka asemblerowa}
+	\subsubsection{Wstawka asemblerowa}
 	Zaimplementowano wstawkê dodaj±c± dwie liczby. 
 	\begin{verbatim}
 	#include <stdio.h>
@@ -676,10 +686,10 @@ Zakres æwiczenia:
 		gcc zad3.c	
 	\end{verbatim}
 	
-\section{Wnioski}
+\subsection{Wnioski}
 	Umiejêtno¶æ ³±czenia programów napisanych w C i asemblerze jest praktyczna. Odpowiednie przekazywanie parametrów poprzez stos wymaga dog³êbnego zrozumienia prawid³owej obs³ugi zmiennych odk³adanych na stosie.
 \newpage
-\part{}
+%\part{}
 
 
 %-------------4------------------------------
@@ -694,14 +704,15 @@ Zakres æwiczenia:
 \end{center}
 
 \vspace{0.2ex}
-\section{Tre¶æ æwiczenia}
+\section{}
+\subsection{Tre¶æ æwiczenia}
 Zakres æwiczenia:
 \begin{itemize}
 \item Zapoznanie siê z dzia³aniem jednostki zmiennoprzecinkowej, jej kodami b³êdów oraz
 mo¿liwymi dzia³aniami które mo¿na na niej wykonaæ..
 \end{itemize}
 
-\section{Przebieg æwiczenia}
+\subsection{Przebieg æwiczenia}
 \label{sec:przebieg-cwiczenia}
 	
 	Pierwszym krokiem by³o stworzenie aplikacji umo¿liwiaj±cej odczyt odpowiednich flag b³êdów, oraz wy¶wietlania komunikatów z tym zwi±zanych na ekran.	Kolejne polecenia dotyczy³y modyfikacji istniej±cego ju¿ kodu. W wyniku tego rezultatem æwiczenia jest jedna aplikacja. Kod wystêpuj±cy po etykiecie \textit{get-error} sekwencyjnie sprawdza stan rejestru stanu jednostki zmiennoprzecinkowej. Ostatnie 6 bitów zawiera flagi informuj±ce u¿ytkownika o tym, czy dany b³±d wyst±pi³, czy nie.\\
@@ -815,7 +826,7 @@ exit:
 	    gcc zad.c add.s -m32
 	\end{verbatim}
 	
-\section{Wnioski}
+\subsection{Wnioski}
 	P³ynne pos³ugiwanie siê jednostk± zmiennoprzecinkow± wymaga dobrej znajomo¶ci listy rozkazów oraz architektury. Pomocne w przygotowaniu do laboratorium jest zapoznanie siê z budow± rejestru steruj±cego i  kontrolnego.
 
 
